@@ -144,7 +144,7 @@ textarea {
 }
 
 .result-section {
-    margin-bottom: 25px;
+    margin-bottom: 28px;
 }
 
 .result-section h3 {
@@ -160,6 +160,7 @@ textarea {
     white-space: pre-wrap;
     line-height: 1.5;
     word-break: break-word;
+    font-size: 15px;
 }
 
 .button-row {
@@ -169,7 +170,7 @@ textarea {
 }
 
 .small-button {
-    flex: 1;
+    width: 100%;
     border: none;
     border-radius: 8px;
     padding: 13px;
@@ -180,24 +181,6 @@ textarea {
 .copy-button {
     background: #292929;
     color: #ffffff;
-}
-
-.download-button {
-    background: #a00000;
-    color: #ffffff;
-}
-
-.thumbnail-wrapper {
-    width: 100%;
-    overflow: hidden;
-    border-radius: 9px;
-    background: #000000;
-}
-
-canvas {
-    display: block;
-    width: 100%;
-    height: auto;
 }
 
 .note {
@@ -226,10 +209,6 @@ canvas {
         gap: 0;
     }
 
-    .button-row {
-        flex-direction: column;
-    }
-
 }
 
 </style>
@@ -241,6 +220,7 @@ canvas {
 <div class="page">
 
 <div class="container">
+
 
     <div class="header">
 
@@ -259,6 +239,7 @@ canvas {
 
 
         <div class="time-grid">
+
 
             <div class="field">
 
@@ -288,6 +269,7 @@ canvas {
                 >
 
             </div>
+
 
         </div>
 
@@ -321,6 +303,7 @@ canvas {
             GENERATE STREAM
         </button>
 
+
     </div>
 
 
@@ -328,6 +311,7 @@ canvas {
         class="results"
         id="results"
     >
+
 
         <div class="card">
 
@@ -380,37 +364,28 @@ canvas {
 
             <div class="result-section">
 
-                <h3>Thumbnail</h3>
+                <h3>Gemini Thumbnail Prompt</h3>
 
-                <div class="thumbnail-wrapper">
-
-                    <canvas
-                        id="thumbnailCanvas"
-                        width="1280"
-                        height="720"
-                    ></canvas>
-
-                </div>
-
+                <div
+                    class="output"
+                    id="promptOutput"
+                ></div>
 
                 <div class="button-row">
 
                     <button
-                        class="small-button download-button"
-                        onclick="downloadThumbnail()"
+                        class="small-button copy-button"
+                        onclick="copyText('promptOutput')"
                     >
-                        DOWNLOAD THUMBNAIL
+                        COPY GEMINI PROMPT
                     </button>
 
                 </div>
 
-
                 <div class="note">
 
-                    Keep
-                    <b>thumbnail-template.png</b>
-                    in the same GitHub repository
-                    as this index.html.
+                    Attach your original thumbnail to Gemini,
+                    then paste this prompt.
 
                 </div>
 
@@ -419,7 +394,9 @@ canvas {
 
         </div>
 
+
     </div>
+
 
 </div>
 
@@ -427,6 +404,7 @@ canvas {
 
 
 <script>
+
 
 const TITLE_TEMPLATE =
     "Study With Me | {DURATION} Session | JEE 2028";
@@ -450,10 +428,15 @@ Grab your books and study along with me.
 function calculateDuration() {
 
     const start =
-        document.getElementById("startTime").value;
+        document.getElementById(
+            "startTime"
+        ).value;
+
 
     const end =
-        document.getElementById("endTime").value;
+        document.getElementById(
+            "endTime"
+        ).value;
 
 
     if (!start || !end) {
@@ -463,6 +446,7 @@ function calculateDuration() {
 
     const startParts =
         start.split(":");
+
 
     const endParts =
         end.split(":");
@@ -488,7 +472,9 @@ function calculateDuration() {
 
 
     const hours =
-        Math.floor(totalMinutes / 60);
+        Math.floor(
+            totalMinutes / 60
+        );
 
 
     const minutes =
@@ -499,6 +485,7 @@ function calculateDuration() {
         hours: hours,
         minutes: minutes
     };
+
 }
 
 
@@ -531,10 +518,12 @@ function durationText(duration) {
         result +=
             duration.minutes +
             " MIN";
+
     }
 
 
     return result;
+
 }
 
 
@@ -574,6 +563,7 @@ function formatTime(time) {
         " " +
         suffix
     );
+
 }
 
 
@@ -592,6 +582,20 @@ function updateDuration() {
         "duration"
     ).textContent =
         durationText(duration);
+
+}
+
+
+function generateThumbnailPrompt(
+    durationString
+) {
+
+    return `Edit the attached thumbnail while preserving the original design exactly. Do not redesign, restyle, crop, resize, or change the composition. Keep the same black-and-white visual style, typography style, character, positioning, icons, lighting, colors, background, and overall layout.
+Only replace the existing duration text "6 HOUR" with "${durationString}".
+Keep the new duration in exactly the same location, font style, size, weight, alignment, spacing, and white color as the original duration text. Make the replacement look naturally integrated into the original thumbnail.
+Do not add any new elements. Do not remove or modify anything else. The final image should look identical to the attached original thumbnail except for the updated duration.
+Output as a YouTube thumbnail in the original 16:9 format. You don't have to help with images of people, and don't depict some public figures.`;
+
 }
 
 
@@ -670,6 +674,12 @@ function generateStream() {
         );
 
 
+    const thumbnailPrompt =
+        generateThumbnailPrompt(
+            durationString
+        );
+
+
     document.getElementById(
         "titleOutput"
     ).textContent =
@@ -683,14 +693,15 @@ function generateStream() {
 
 
     document.getElementById(
+        "promptOutput"
+    ).textContent =
+        thumbnailPrompt;
+
+
+    document.getElementById(
         "results"
     ).style.display =
         "block";
-
-
-    generateThumbnail(
-        durationString
-    );
 
 
     document.getElementById(
@@ -698,136 +709,7 @@ function generateStream() {
     ).scrollIntoView({
         behavior: "smooth"
     });
-}
 
-
-function generateThumbnail(
-    durationString
-) {
-
-    const canvas =
-        document.getElementById(
-            "thumbnailCanvas"
-        );
-
-
-    const ctx =
-        canvas.getContext("2d");
-
-
-    const image =
-        new Image();
-
-
-    image.onload =
-        function() {
-
-            ctx.clearRect(
-                0,
-                0,
-                canvas.width,
-                canvas.height
-            );
-
-
-            ctx.drawImage(
-                image,
-                0,
-                0,
-                canvas.width,
-                canvas.height
-            );
-
-
-            ctx.fillStyle =
-                "#000000";
-
-
-            ctx.fillRect(
-                40,
-                205,
-                720,
-                250
-            );
-
-
-            ctx.fillStyle =
-                "#ffffff";
-
-
-            ctx.font =
-                "bold 175px Arial";
-
-
-            ctx.textBaseline =
-                "top";
-
-
-            ctx.fillText(
-                durationString,
-                55,
-                210
-            );
-
-        };
-
-
-    image.onerror =
-        function() {
-
-            ctx.fillStyle =
-                "#090909";
-
-
-            ctx.fillRect(
-                0,
-                0,
-                1280,
-                720
-            );
-
-
-            ctx.fillStyle =
-                "#ffffff";
-
-
-            ctx.font =
-                "bold 95px Arial";
-
-
-            ctx.fillText(
-                "STUDY WITH ME",
-                55,
-                70
-            );
-
-
-            ctx.font =
-                "bold 150px Arial";
-
-
-            ctx.fillText(
-                durationString,
-                55,
-                220
-            );
-
-
-            ctx.font =
-                "bold 100px Arial";
-
-
-            ctx.fillText(
-                "SESSION",
-                55,
-                410
-            );
-
-        };
-
-
-    image.src =
-        "thumbnail-template.png";
 }
 
 
@@ -859,32 +741,7 @@ function copyText(elementId) {
 
             }
         );
-}
 
-
-function downloadThumbnail() {
-
-    const canvas =
-        document.getElementById(
-            "thumbnailCanvas"
-        );
-
-
-    const link =
-        document.createElement("a");
-
-
-    link.download =
-        "study-with-me-thumbnail.png";
-
-
-    link.href =
-        canvas.toDataURL(
-            "image/png"
-        );
-
-
-    link.click();
 }
 
 
