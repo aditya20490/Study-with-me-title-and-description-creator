@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,7 +13,8 @@
     box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
     margin: 0;
     padding: 0;
     width: 100%;
@@ -189,7 +191,7 @@ textarea {
     width: 100%;
     overflow: hidden;
     border-radius: 9px;
-    background: #000;
+    background: #000000;
 }
 
 canvas {
@@ -241,8 +243,13 @@ canvas {
 <div class="container">
 
     <div class="header">
+
         <h1>Study Stream Generator</h1>
-        <p>Generate your stream details in seconds.</p>
+
+        <p>
+            Generate your stream details in seconds.
+        </p>
+
     </div>
 
 
@@ -254,19 +261,41 @@ canvas {
         <div class="time-grid">
 
             <div class="field">
-                <label for="startTime">Start Time</label>
-                <input type="time" id="startTime" value="17:00">
+
+                <label for="startTime">
+                    Start Time
+                </label>
+
+                <input
+                    type="time"
+                    id="startTime"
+                    value="17:00"
+                >
+
             </div>
 
+
             <div class="field">
-                <label for="endTime">End Time</label>
-                <input type="time" id="endTime" value="19:30">
+
+                <label for="endTime">
+                    End Time
+                </label>
+
+                <input
+                    type="time"
+                    id="endTime"
+                    value="19:30"
+                >
+
             </div>
 
         </div>
 
 
-        <div class="duration" id="duration">
+        <div
+            class="duration"
+            id="duration"
+        >
             2 HOURS 30 MIN
         </div>
 
@@ -295,9 +324,13 @@ canvas {
     </div>
 
 
-    <div class="results" id="results">
+    <div
+        class="results"
+        id="results"
+    >
 
         <div class="card">
+
 
             <div class="result-section">
 
@@ -359,6 +392,7 @@ canvas {
 
                 </div>
 
+
                 <div class="button-row">
 
                     <button
@@ -370,12 +404,18 @@ canvas {
 
                 </div>
 
+
                 <div class="note">
-                    Keep your thumbnail-template.jpg file in the
-                    same GitHub repository as this index.html.
+
+                    Keep
+                    <b>thumbnail-template.png</b>
+                    in the same GitHub repository
+                    as this index.html.
+
                 </div>
 
             </div>
+
 
         </div>
 
@@ -415,33 +455,45 @@ function calculateDuration() {
     const end =
         document.getElementById("endTime").value;
 
+
     if (!start || !end) {
         return null;
     }
 
-    const startParts = start.split(":");
-    const endParts = end.split(":");
+
+    const startParts =
+        start.split(":");
+
+    const endParts =
+        end.split(":");
+
 
     let startMinutes =
         Number(startParts[0]) * 60 +
         Number(startParts[1]);
 
+
     let endMinutes =
         Number(endParts[0]) * 60 +
         Number(endParts[1]);
+
 
     if (endMinutes <= startMinutes) {
         endMinutes += 1440;
     }
 
+
     const totalMinutes =
         endMinutes - startMinutes;
+
 
     const hours =
         Math.floor(totalMinutes / 60);
 
+
     const minutes =
         totalMinutes % 60;
+
 
     return {
         hours: hours,
@@ -454,16 +506,20 @@ function durationText(duration) {
 
     let result = "";
 
+
     if (duration.hours > 0) {
 
         result +=
             duration.hours +
             " HOUR";
 
+
         if (duration.hours !== 1) {
             result += "S";
         }
+
     }
+
 
     if (duration.minutes > 0) {
 
@@ -471,10 +527,12 @@ function durationText(duration) {
             result += " ";
         }
 
+
         result +=
             duration.minutes +
             " MIN";
     }
+
 
     return result;
 }
@@ -482,19 +540,32 @@ function durationText(duration) {
 
 function formatTime(time) {
 
-    const parts = time.split(":");
+    const parts =
+        time.split(":");
 
-    let hour = Number(parts[0]);
-    const minute = Number(parts[1]);
+
+    let hour =
+        Number(parts[0]);
+
+
+    const minute =
+        Number(parts[1]);
+
 
     const suffix =
-        hour >= 12 ? "PM" : "AM";
+        hour >= 12
+            ? "PM"
+            : "AM";
 
-    hour = hour % 12;
+
+    hour =
+        hour % 12;
+
 
     if (hour === 0) {
         hour = 12;
     }
+
 
     return (
         hour +
@@ -511,11 +582,15 @@ function updateDuration() {
     const duration =
         calculateDuration();
 
+
     if (!duration) {
         return;
     }
 
-    document.getElementById("duration").textContent =
+
+    document.getElementById(
+        "duration"
+    ).textContent =
         durationText(duration);
 }
 
@@ -523,20 +598,32 @@ function updateDuration() {
 function generateStream() {
 
     const start =
-        document.getElementById("startTime").value;
+        document.getElementById(
+            "startTime"
+        ).value;
+
 
     const end =
-        document.getElementById("endTime").value;
+        document.getElementById(
+            "endTime"
+        ).value;
+
 
     const target =
-        document.getElementById("target").value.trim();
+        document.getElementById(
+            "target"
+        ).value.trim();
+
 
     const duration =
         calculateDuration();
 
+
     if (!duration) {
 
-        alert("Please enter the start and end time.");
+        alert(
+            "Please enter the start and end time."
+        );
 
         return;
     }
@@ -545,8 +632,10 @@ function generateStream() {
     const durationString =
         durationText(duration);
 
+
     const formattedStart =
         formatTime(start);
+
 
     const formattedEnd =
         formatTime(end);
@@ -581,172 +670,219 @@ function generateStream() {
         );
 
 
-    document.getElementById("titleOutput").textContent =
+    document.getElementById(
+        "titleOutput"
+    ).textContent =
         title;
 
-    document.getElementById("descriptionOutput").textContent =
+
+    document.getElementById(
+        "descriptionOutput"
+    ).textContent =
         description;
 
 
-    document.getElementById("results").style.display =
+    document.getElementById(
+        "results"
+    ).style.display =
         "block";
 
 
-    generateThumbnail(durationString);
+    generateThumbnail(
+        durationString
+    );
 
 
-    document.getElementById("results").scrollIntoView({
+    document.getElementById(
+        "results"
+    ).scrollIntoView({
         behavior: "smooth"
     });
 }
 
 
-function generateThumbnail(durationString) {
+function generateThumbnail(
+    durationString
+) {
 
     const canvas =
-        document.getElementById("thumbnailCanvas");
+        document.getElementById(
+            "thumbnailCanvas"
+        );
+
 
     const ctx =
         canvas.getContext("2d");
 
+
     const image =
         new Image();
 
-    image.onload = function() {
 
-        ctx.clearRect(
-            0,
-            0,
-            canvas.width,
-            canvas.height
-        );
+    image.onload =
+        function() {
 
-
-        ctx.drawImage(
-            image,
-            0,
-            0,
-            canvas.width,
-            canvas.height
-        );
+            ctx.clearRect(
+                0,
+                0,
+                canvas.width,
+                canvas.height
+            );
 
 
-        /*
-        Cover the original duration text.
-
-        The original thumbnail has
-        "6 HOUR" approximately in this area.
-        */
-
-        ctx.fillStyle = "#000000";
-
-        ctx.fillRect(
-            40,
-            205,
-            720,
-            250
-        );
+            ctx.drawImage(
+                image,
+                0,
+                0,
+                canvas.width,
+                canvas.height
+            );
 
 
-        ctx.fillStyle = "#ffffff";
-
-        ctx.font =
-            "bold 175px Arial";
-
-        ctx.textBaseline = "top";
-
-        ctx.fillText(
-            durationString,
-            55,
-            210
-        );
-
-    };
+            ctx.fillStyle =
+                "#000000";
 
 
-    image.onerror = function() {
+            ctx.fillRect(
+                40,
+                205,
+                720,
+                250
+            );
 
-        ctx.fillStyle = "#090909";
 
-        ctx.fillRect(
-            0,
-            0,
-            1280,
-            720
-        );
+            ctx.fillStyle =
+                "#ffffff";
 
-        ctx.fillStyle = "#ffffff";
 
-        ctx.font =
-            "bold 95px Arial";
+            ctx.font =
+                "bold 175px Arial";
 
-        ctx.fillText(
-            "STUDY WITH ME",
-            55,
-            70
-        );
 
-        ctx.font =
-            "bold 150px Arial";
+            ctx.textBaseline =
+                "top";
 
-        ctx.fillText(
-            durationString,
-            55,
-            220
-        );
 
-        ctx.font =
-            "bold 100px Arial";
+            ctx.fillText(
+                durationString,
+                55,
+                210
+            );
 
-        ctx.fillText(
-            "SESSION",
-            55,
-            410
-        );
+        };
 
-    };
+
+    image.onerror =
+        function() {
+
+            ctx.fillStyle =
+                "#090909";
+
+
+            ctx.fillRect(
+                0,
+                0,
+                1280,
+                720
+            );
+
+
+            ctx.fillStyle =
+                "#ffffff";
+
+
+            ctx.font =
+                "bold 95px Arial";
+
+
+            ctx.fillText(
+                "STUDY WITH ME",
+                55,
+                70
+            );
+
+
+            ctx.font =
+                "bold 150px Arial";
+
+
+            ctx.fillText(
+                durationString,
+                55,
+                220
+            );
+
+
+            ctx.font =
+                "bold 100px Arial";
+
+
+            ctx.fillText(
+                "SESSION",
+                55,
+                410
+            );
+
+        };
 
 
     image.src =
-        "thumbnail-template.jpg";
+        "thumbnail-template.png";
 }
 
 
 function copyText(elementId) {
 
     const text =
-        document.getElementById(elementId).textContent;
+        document.getElementById(
+            elementId
+        ).textContent;
+
 
     navigator.clipboard
         .writeText(text)
-        .then(function() {
+        .then(
+            function() {
 
-            alert("Copied! ✅");
+                alert(
+                    "Copied! ✅"
+                );
 
-        })
-        .catch(function() {
+            }
+        )
+        .catch(
+            function() {
 
-            alert(
-                "Copy failed. Please select and copy it manually."
-            );
+                alert(
+                    "Copy failed. Please select and copy it manually."
+                );
 
-        });
+            }
+        );
 }
 
 
 function downloadThumbnail() {
 
     const canvas =
-        document.getElementById("thumbnailCanvas");
+        document.getElementById(
+            "thumbnailCanvas"
+        );
+
 
     const link =
         document.createElement("a");
 
+
     link.download =
         "study-with-me-thumbnail.png";
 
+
     link.href =
-        canvas.toDataURL("image/png");
+        canvas.toDataURL(
+            "image/png"
+        );
+
 
     link.click();
 }
@@ -773,4 +909,5 @@ updateDuration();
 </script>
 
 </body>
+
 </html>
