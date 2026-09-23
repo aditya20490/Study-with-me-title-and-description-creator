@@ -1,281 +1,398 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Study Stream Generator</title>
+<title>Study Stream Generator</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<style>
 
-    body {
-      margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background: #0b0b0b;
-      color: white;
-    }
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100%;
+}
+
+body {
+    background: #080808;
+    color: #ffffff;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.page {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    width: 100%;
+    max-width: 720px;
+    padding: 35px 20px 60px;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 32px;
+    font-weight: 700;
+}
+
+.header p {
+    margin: 10px 0 0;
+    color: #999;
+    font-size: 16px;
+}
+
+.card {
+    width: 100%;
+    background: #151515;
+    border: 1px solid #2b2b2b;
+    border-radius: 16px;
+    padding: 28px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.card h2 {
+    margin: 0 0 25px;
+    font-size: 25px;
+}
+
+label {
+    display: block;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 9px;
+}
+
+input,
+textarea {
+    width: 100%;
+    background: #0c0c0c;
+    color: #ffffff;
+    border: 1px solid #363636;
+    border-radius: 9px;
+    padding: 14px;
+    font-size: 16px;
+    font-family: inherit;
+    outline: none;
+}
+
+input:focus,
+textarea:focus {
+    border-color: #777;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.time-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.field {
+    margin-bottom: 20px;
+}
+
+.duration {
+    width: 100%;
+    background: #090909;
+    border-radius: 9px;
+    padding: 18px;
+    text-align: center;
+    font-size: 25px;
+    font-weight: 700;
+    margin: 5px 0 22px;
+}
+
+.generate-button {
+    width: 100%;
+    border: none;
+    border-radius: 9px;
+    padding: 16px;
+    background: #ffffff;
+    color: #000000;
+    font-size: 17px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.generate-button:active {
+    transform: scale(0.99);
+}
+
+.results {
+    display: none;
+    margin-top: 25px;
+}
+
+.result-section {
+    margin-bottom: 25px;
+}
+
+.result-section h3 {
+    margin: 0 0 10px;
+    font-size: 18px;
+}
+
+.output {
+    background: #090909;
+    border: 1px solid #303030;
+    border-radius: 9px;
+    padding: 15px;
+    white-space: pre-wrap;
+    line-height: 1.5;
+    word-break: break-word;
+}
+
+.button-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.small-button {
+    flex: 1;
+    border: none;
+    border-radius: 8px;
+    padding: 13px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.copy-button {
+    background: #292929;
+    color: #ffffff;
+}
+
+.download-button {
+    background: #a00000;
+    color: #ffffff;
+}
+
+.thumbnail-wrapper {
+    width: 100%;
+    overflow: hidden;
+    border-radius: 9px;
+    background: #000;
+}
+
+canvas {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.note {
+    color: #777;
+    font-size: 13px;
+    line-height: 1.5;
+    margin-top: 10px;
+}
+
+@media (max-width: 600px) {
 
     .container {
-      width: min(900px, 92%);
-      margin: auto;
-      padding: 35px 0 60px;
+        padding: 25px 16px 50px;
     }
 
-    h1 {
-      font-size: 32px;
-      margin-bottom: 5px;
-    }
-
-    .subtitle {
-      color: #999;
-      margin-bottom: 30px;
+    .header h1 {
+        font-size: 27px;
     }
 
     .card {
-      background: #151515;
-      border: 1px solid #292929;
-      border-radius: 14px;
-      padding: 24px;
-      margin-bottom: 20px;
+        padding: 22px;
     }
 
-    label {
-      display: block;
-      margin-bottom: 8px;
-      color: #ddd;
-      font-weight: bold;
-    }
-
-    input,
-    textarea {
-      width: 100%;
-      background: #0d0d0d;
-      color: white;
-      border: 1px solid #333;
-      border-radius: 8px;
-      padding: 13px;
-      font-size: 16px;
-      margin-bottom: 18px;
-      outline: none;
-    }
-
-    input:focus,
-    textarea:focus {
-      border-color: #777;
-    }
-
-    .time-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 15px;
-    }
-
-    button {
-      border: none;
-      border-radius: 8px;
-      padding: 13px 18px;
-      font-size: 15px;
-      font-weight: bold;
-      cursor: pointer;
-      margin: 5px 5px 5px 0;
-    }
-
-    .generate {
-      width: 100%;
-      background: white;
-      color: black;
-      font-size: 17px;
-      padding: 15px;
-      margin-top: 5px;
-    }
-
-    .copy {
-      background: #272727;
-      color: white;
-    }
-
-    .download {
-      background: #9d0000;
-      color: white;
-    }
-
-    .result {
-      display: none;
-    }
-
-    .result-box {
-      background: #0d0d0d;
-      border: 1px solid #333;
-      border-radius: 8px;
-      padding: 15px;
-      white-space: pre-wrap;
-      word-break: break-word;
-      margin-bottom: 10px;
-      line-height: 1.5;
-    }
-
-    .duration {
-      text-align: center;
-      font-size: 24px;
-      font-weight: bold;
-      padding: 15px;
-      background: #0d0d0d;
-      border-radius: 8px;
-      margin: 15px 0;
-    }
-
-    canvas {
-      width: 100%;
-      max-width: 768px;
-      display: block;
-      margin: 15px auto;
-      border-radius: 8px;
-    }
-
-    .small {
-      color: #777;
-      font-size: 13px;
-      line-height: 1.5;
-    }
-
-    @media (max-width: 600px) {
-      .time-row {
+    .time-grid {
         grid-template-columns: 1fr;
-      }
-
-      h1 {
-        font-size: 26px;
-      }
+        gap: 0;
     }
-  </style>
+
+    .button-row {
+        flex-direction: column;
+    }
+
+}
+
+</style>
 </head>
+
 
 <body>
 
+<div class="page">
+
 <div class="container">
 
-  <h1>Study Stream Generator</h1>
-  <div class="subtitle">
-    Generate your YouTube title, description and thumbnail in seconds.
-  </div>
+    <div class="header">
+        <h1>Study Stream Generator</h1>
+        <p>Generate your stream details in seconds.</p>
+    </div>
 
-  <div class="card">
 
-    <h2>New Study Session</h2>
+    <div class="card">
 
-    <div class="time-row">
+        <h2>New Study Session</h2>
 
-      <div>
-        <label for="startTime">Start Time</label>
-        <input type="time" id="startTime" value="06:30">
-      </div>
 
-      <div>
-        <label for="endTime">End Time</label>
-        <input type="time" id="endTime" value="12:30">
-      </div>
+        <div class="time-grid">
+
+            <div class="field">
+                <label for="startTime">Start Time</label>
+                <input type="time" id="startTime" value="17:00">
+            </div>
+
+            <div class="field">
+                <label for="endTime">End Time</label>
+                <input type="time" id="endTime" value="19:30">
+            </div>
+
+        </div>
+
+
+        <div class="duration" id="duration">
+            2 HOURS 30 MIN
+        </div>
+
+
+        <div class="field">
+
+            <label for="target">
+                Today's Study Target
+            </label>
+
+            <textarea
+                id="target"
+                placeholder="Example: Physics - NLM&#10;Chemistry - Atomic Structure&#10;Maths - Straight Lines"
+            ></textarea>
+
+        </div>
+
+
+        <button
+            class="generate-button"
+            onclick="generateStream()"
+        >
+            GENERATE STREAM
+        </button>
 
     </div>
 
-    <div class="duration" id="duration">
-      6 HOURS
+
+    <div class="results" id="results">
+
+        <div class="card">
+
+            <div class="result-section">
+
+                <h3>Title</h3>
+
+                <div
+                    class="output"
+                    id="titleOutput"
+                ></div>
+
+                <div class="button-row">
+
+                    <button
+                        class="small-button copy-button"
+                        onclick="copyText('titleOutput')"
+                    >
+                        COPY TITLE
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div class="result-section">
+
+                <h3>Description</h3>
+
+                <div
+                    class="output"
+                    id="descriptionOutput"
+                ></div>
+
+                <div class="button-row">
+
+                    <button
+                        class="small-button copy-button"
+                        onclick="copyText('descriptionOutput')"
+                    >
+                        COPY DESCRIPTION
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div class="result-section">
+
+                <h3>Thumbnail</h3>
+
+                <div class="thumbnail-wrapper">
+
+                    <canvas
+                        id="thumbnailCanvas"
+                        width="1280"
+                        height="720"
+                    ></canvas>
+
+                </div>
+
+                <div class="button-row">
+
+                    <button
+                        class="small-button download-button"
+                        onclick="downloadThumbnail()"
+                    >
+                        DOWNLOAD THUMBNAIL
+                    </button>
+
+                </div>
+
+                <div class="note">
+                    Keep your thumbnail-template.jpg file in the
+                    same GitHub repository as this index.html.
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
 
-    <label for="target">
-      Today's Study Target
-    </label>
-
-    <textarea
-      id="target"
-      rows="3"
-      placeholder="Example: Physics - NLM, Chemistry - Atomic Structure, Maths - Straight Lines"
-    ></textarea>
-
-    <button class="generate" onclick="generateStream()">
-      GENERATE STREAM
-    </button>
-
-  </div>
-
-
-  <div class="card result" id="result">
-
-    <h2>Your Stream</h2>
-
-    <h3>Title</h3>
-
-    <div class="result-box" id="titleOutput"></div>
-
-    <button class="copy" onclick="copyText('titleOutput')">
-      COPY TITLE
-    </button>
-
-
-    <h3>Description</h3>
-
-    <div class="result-box" id="descriptionOutput"></div>
-
-    <button class="copy" onclick="copyText('descriptionOutput')">
-      COPY DESCRIPTION
-    </button>
-
-
-    <h3>Thumbnail</h3>
-
-    <canvas id="thumbnailCanvas" width="1280" height="720"></canvas>
-
-    <button class="download" onclick="downloadThumbnail()">
-      DOWNLOAD THUMBNAIL
-    </button>
-
-    <p class="small">
-      Keep <b>thumbnail-template.jpg</b> in the same GitHub repository
-      as this index.html file.
-    </p>
-
-  </div>
+</div>
 
 </div>
 
 
 <script>
 
-  /*
-   ============================================================
-   FIXED CHANNEL SETTINGS
-   ============================================================
-  */
-
-  const CHANNEL_NAME = "JEE 2028 Study With Me";
-
-  /*
-   Your title format.
-
-   {DURATION} automatically becomes:
-   1 HOUR
-   2 HOURS
-   6 HOURS
-   etc.
-  */
-
-  const TITLE_FORMAT =
+const TITLE_TEMPLATE =
     "Study With Me | {DURATION} Session | JEE 2028";
 
 
-  /*
-   Description template.
-
-   These values automatically change:
-   {START}
-   {END}
-   {DURATION}
-   {TARGET}
-  */
-
-  const DESCRIPTION_TEMPLATE =
+const DESCRIPTION_TEMPLATE =
 `Study with me for a focused {DURATION} JEE 2028 study session.
 
 🕐 Session: {START} – {END}
@@ -285,1017 +402,373 @@
 Today's targets:
 {TARGET}
 
-Grab your books, put your phone away, and study along with me.
+Grab your books and study along with me.
 
 #JEE2028 #StudyWithMe #JEE`;
 
 
-  /*
-   ============================================================
-   TIME CALCULATION
-   ============================================================
-  */
+function calculateDuration() {
 
-  function calculateDuration() {
+    const start =
+        document.getElementById("startTime").value;
 
-    const start = document.getElementById("startTime").value;
-    const end = document.getElementById("endTime").value;
+    const end =
+        document.getElementById("endTime").value;
 
-    if (!start || !end) return null;
-
-    let [startHour, startMinute] = start.split(":").map(Number);
-    let [endHour, endMinute] = end.split(":").map(Number);
-
-    let startTotal = startHour * 60 + startMinute;
-    let endTotal = endHour * 60 + endMinute;
-
-    /*
-      Allows sessions that cross midnight.
-    */
-
-    if (endTotal <= startTotal) {
-      endTotal += 24 * 60;
+    if (!start || !end) {
+        return null;
     }
 
-    let difference = endTotal - startTotal;
+    const startParts = start.split(":");
+    const endParts = end.split(":");
 
-    let hours = Math.floor(difference / 60);
-    let minutes = difference % 60;
+    let startMinutes =
+        Number(startParts[0]) * 60 +
+        Number(startParts[1]);
+
+    let endMinutes =
+        Number(endParts[0]) * 60 +
+        Number(endParts[1]);
+
+    if (endMinutes <= startMinutes) {
+        endMinutes += 1440;
+    }
+
+    const totalMinutes =
+        endMinutes - startMinutes;
+
+    const hours =
+        Math.floor(totalMinutes / 60);
+
+    const minutes =
+        totalMinutes % 60;
 
     return {
-      hours: hours,
-      minutes: minutes
+        hours: hours,
+        minutes: minutes
     };
-  }
+}
 
 
-  /*
-   ============================================================
-   DURATION TEXT
-   ============================================================
-  */
+function durationText(duration) {
 
-  function getDurationText(duration) {
-
-    if (!duration) return "";
-
-    let text = "";
+    let result = "";
 
     if (duration.hours > 0) {
 
-      text += duration.hours + " HOUR";
+        result +=
+            duration.hours +
+            " HOUR";
 
-      if (duration.hours !== 1) {
-        text += "S";
-      }
+        if (duration.hours !== 1) {
+            result += "S";
+        }
     }
 
     if (duration.minutes > 0) {
 
-      if (text !== "") {
-        text += " ";
-      }
+        if (result !== "") {
+            result += " ";
+        }
 
-      text += duration.minutes + " MIN";
+        result +=
+            duration.minutes +
+            " MIN";
     }
 
-    return text;
-  }
+    return result;
+}
 
 
-  /*
-   ============================================================
-   FORMAT TIME
-   ============================================================
-  */
+function formatTime(time) {
 
-  function formatTime(time) {
+    const parts = time.split(":");
 
-    let [hour, minute] = time.split(":").map(Number);
+    let hour = Number(parts[0]);
+    const minute = Number(parts[1]);
 
-    const suffix = hour >= 12 ? "PM" : "AM";
+    const suffix =
+        hour >= 12 ? "PM" : "AM";
 
     hour = hour % 12;
 
     if (hour === 0) {
-      hour = 12;
+        hour = 12;
     }
 
     return (
-      hour +
-      ":" +
-      String(minute).padStart(2, "0") +
-      " " +
-      suffix
+        hour +
+        ":" +
+        String(minute).padStart(2, "0") +
+        " " +
+        suffix
     );
-  }
+}
 
 
-  /*
-   ============================================================
-   GENERATE EVERYTHING
-   ============================================================
-  */
+function updateDuration() {
 
-  function generateStream() {
-
-    const start = document.getElementById("startTime").value;
-    const end = document.getElementById("endTime").value;
-
-    const target =
-      document.getElementById("target").value.trim();
-
-    const duration = calculateDuration();
+    const duration =
+        calculateDuration();
 
     if (!duration) {
-      alert("Please enter both start and end times.");
-      return;
+        return;
     }
-
-    const durationText = getDurationText(duration);
-
-    const formattedStart = formatTime(start);
-    const formattedEnd = formatTime(end);
-
-    /*
-      TITLE
-    */
-
-    const title = TITLE_FORMAT
-      .replaceAll("{DURATION}", durationText);
-
-
-    /*
-      DESCRIPTION
-    */
-
-    const description = DESCRIPTION_TEMPLATE
-      .replaceAll("{START}", formattedStart)
-      .replaceAll("{END}", formattedEnd)
-      .replaceAll("{DURATION}", durationText)
-      .replaceAll(
-        "{TARGET}",
-        target || "Focused JEE 2028 preparation"
-      );
-
-
-    /*
-      SHOW RESULTS
-    */
-
-    document.getElementById("titleOutput").textContent = title;
-
-    document.getElementById("descriptionOutput").textContent =
-      description;
 
     document.getElementById("duration").textContent =
-      durationText;
+        durationText(duration);
+}
 
-    document.getElementById("result").style.display = "block";
 
+function generateStream() {
 
-    /*
-      GENERATE THUMBNAIL
-    */
+    const start =
+        document.getElementById("startTime").value;
 
-    generateThumbnail(durationText);
-  }
-
-
-  /*
-   ============================================================
-   THUMBNAIL GENERATOR
-   ============================================================
-  */
-
-  function generateThumbnail(durationText) {
-
-    const canvas =
-      document.getElementById("thumbnailCanvas");
-
-    const ctx = canvas.getContext("2d");
-
-    const image = new Image();
-
-    image.src = "thumbnail-template.jpg";
-
-    image.onload = function () {
-
-      /*
-        Draw the fixed thumbnail image.
-      */
-
-      ctx.drawImage(
-        image,
-        0,
-        0,
-        canvas.width,
-        canvas.height
-      );
-
-
-      /*
-        IMPORTANT:
-
-        The original template already has
-        "6 HOUR" written on it.
-
-        We cover that area with black and
-        replace it with the current duration.
-      */
-
-      ctx.fillStyle = "#000000";
-
-      ctx.fillRect(
-        45,
-        210,
-        650,
-        215
-      );
-
-
-      /*
-        Duration text
-      */
-
-      ctx.fillStyle = "#ffffff";
-
-      ctx.font =
-        "bold 190px Arial";
-
-      ctx.textBaseline = "top";
-
-      ctx.fillText(
-        durationText,
-        50,
-        205
-      );
-
-    };
-
-    image.onerror = function () {
-
-      /*
-        If the image doesn't exist,
-        show a simple fallback.
-      */
-
-      ctx.fillStyle = "#111111";
-      ctx.fillRect(
-        0,
-        0,
-        canvas.width,
-        canvas.height
-      );
-
-      ctx.fillStyle = "#ffffff";
-
-      ctx.font =
-        "bold 100px Arial";
-
-      ctx.fillText(
-        "STUDY WITH ME",
-        60,
-        100
-      );
-
-      ctx.font =
-        "bold 160px Arial";
-
-      ctx.fillText(
-        durationText,
-        60,
-        300
-      );
-
-      ctx.font =
-        "bold 80px Arial";
-
-      ctx.fillText(
-        "SESSION",
-        60,
-        500
-      );
-    };
-  }
-
-
-  /*
-   ============================================================
-   COPY BUTTON
-   ============================================================
-  */
-
-  function copyText(elementId) {
-
-    const text =
-      document.getElementById(elementId).textContent;
-
-    navigator.clipboard.writeText(text);
-
-    alert("Copied! ✅");
-  }
-
-
-  /*
-   ============================================================
-   DOWNLOAD THUMBNAIL
-   ============================================================
-  */
-
-  function downloadThumbnail() {
-
-    const canvas =
-      document.getElementById("thumbnailCanvas");
-
-    const link =
-      document.createElement("a");
-
-    link.download =
-      "study-with-me-thumbnail.png";
-
-    link.href =
-      canvas.toDataURL("image/png");
-
-    link.click();
-  }
-
-
-  /*
-   ============================================================
-   LIVE DURATION UPDATE<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Study Stream Generator</title>
-
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background: #0b0b0b;
-      color: white;
-    }
-
-    .container {
-      width: min(900px, 92%);
-      margin: auto;
-      padding: 35px 0 60px;
-    }
-
-    h1 {
-      font-size: 32px;
-      margin-bottom: 5px;
-    }
-
-    .subtitle {
-      color: #999;
-      margin-bottom: 30px;
-    }
-
-    .card {
-      background: #151515;
-      border: 1px solid #292929;
-      border-radius: 14px;
-      padding: 24px;
-      margin-bottom: 20px;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 8px;
-      color: #ddd;
-      font-weight: bold;
-    }
-
-    input,
-    textarea {
-      width: 100%;
-      background: #0d0d0d;
-      color: white;
-      border: 1px solid #333;
-      border-radius: 8px;
-      padding: 13px;
-      font-size: 16px;
-      margin-bottom: 18px;
-      outline: none;
-    }
-
-    input:focus,
-    textarea:focus {
-      border-color: #777;
-    }
-
-    .time-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 15px;
-    }
-
-    button {
-      border: none;
-      border-radius: 8px;
-      padding: 13px 18px;
-      font-size: 15px;
-      font-weight: bold;
-      cursor: pointer;
-      margin: 5px 5px 5px 0;
-    }
-
-    .generate {
-      width: 100%;
-      background: white;
-      color: black;
-      font-size: 17px;
-      padding: 15px;
-      margin-top: 5px;
-    }
-
-    .copy {
-      background: #272727;
-      color: white;
-    }
-
-    .download {
-      background: #9d0000;
-      color: white;
-    }
-
-    .result {
-      display: none;
-    }
-
-    .result-box {
-      background: #0d0d0d;
-      border: 1px solid #333;
-      border-radius: 8px;
-      padding: 15px;
-      white-space: pre-wrap;
-      word-break: break-word;
-      margin-bottom: 10px;
-      line-height: 1.5;
-    }
-
-    .duration {
-      text-align: center;
-      font-size: 24px;
-      font-weight: bold;
-      padding: 15px;
-      background: #0d0d0d;
-      border-radius: 8px;
-      margin: 15px 0;
-    }
-
-    canvas {
-      width: 100%;
-      max-width: 768px;
-      display: block;
-      margin: 15px auto;
-      border-radius: 8px;
-    }
-
-    .small {
-      color: #777;
-      font-size: 13px;
-      line-height: 1.5;
-    }
-
-    @media (max-width: 600px) {
-      .time-row {
-        grid-template-columns: 1fr;
-      }
-
-      h1 {
-        font-size: 26px;
-      }
-    }
-  </style>
-</head>
-
-<body>
-
-<div class="container">
-
-  <h1>Study Stream Generator</h1>
-  <div class="subtitle">
-    Generate your YouTube title, description and thumbnail in seconds.
-  </div>
-
-  <div class="card">
-
-    <h2>New Study Session</h2>
-
-    <div class="time-row">
-
-      <div>
-        <label for="startTime">Start Time</label>
-        <input type="time" id="startTime" value="06:30">
-      </div>
-
-      <div>
-        <label for="endTime">End Time</label>
-        <input type="time" id="endTime" value="12:30">
-      </div>
-
-    </div>
-
-    <div class="duration" id="duration">
-      6 HOURS
-    </div>
-
-    <label for="target">
-      Today's Study Target
-    </label>
-
-    <textarea
-      id="target"
-      rows="3"
-      placeholder="Example: Physics - NLM, Chemistry - Atomic Structure, Maths - Straight Lines"
-    ></textarea>
-
-    <button class="generate" onclick="generateStream()">
-      GENERATE STREAM
-    </button>
-
-  </div>
-
-
-  <div class="card result" id="result">
-
-    <h2>Your Stream</h2>
-
-    <h3>Title</h3>
-
-    <div class="result-box" id="titleOutput"></div>
-
-    <button class="copy" onclick="copyText('titleOutput')">
-      COPY TITLE
-    </button>
-
-
-    <h3>Description</h3>
-
-    <div class="result-box" id="descriptionOutput"></div>
-
-    <button class="copy" onclick="copyText('descriptionOutput')">
-      COPY DESCRIPTION
-    </button>
-
-
-    <h3>Thumbnail</h3>
-
-    <canvas id="thumbnailCanvas" width="1280" height="720"></canvas>
-
-    <button class="download" onclick="downloadThumbnail()">
-      DOWNLOAD THUMBNAIL
-    </button>
-
-    <p class="small">
-      Keep <b>thumbnail-template.jpg</b> in the same GitHub repository
-      as this index.html file.
-    </p>
-
-  </div>
-
-</div>
-
-
-<script>
-
-  /*
-   ============================================================
-   FIXED CHANNEL SETTINGS
-   ============================================================
-  */
-
-  const CHANNEL_NAME = "JEE 2028 Study With Me";
-
-  /*
-   Your title format.
-
-   {DURATION} automatically becomes:
-   1 HOUR
-   2 HOURS
-   6 HOURS
-   etc.
-  */
-
-  const TITLE_FORMAT =
-    "Study With Me | {DURATION} Session | JEE 2028";
-
-
-  /*
-   Description template.
-
-   These values automatically change:
-   {START}
-   {END}
-   {DURATION}
-   {TARGET}
-  */
-
-  const DESCRIPTION_TEMPLATE =
-`Study with me for a focused {DURATION} JEE 2028 study session.
-
-🕐 Session: {START} – {END}
-📚 JEE 2028 Preparation
-🎧 No talking • Deep focus
-
-Today's targets:
-{TARGET}
-
-Grab your books, put your phone away, and study along with me.
-
-#JEE2028 #StudyWithMe #JEE`;
-
-
-  /*
-   ============================================================
-   TIME CALCULATION
-   ============================================================
-  */
-
-  function calculateDuration() {
-
-    const start = document.getElementById("startTime").value;
-    const end = document.getElementById("endTime").value;
-
-    if (!start || !end) return null;
-
-    let [startHour, startMinute] = start.split(":").map(Number);
-    let [endHour, endMinute] = end.split(":").map(Number);
-
-    let startTotal = startHour * 60 + startMinute;
-    let endTotal = endHour * 60 + endMinute;
-
-    /*
-      Allows sessions that cross midnight.
-    */
-
-    if (endTotal <= startTotal) {
-      endTotal += 24 * 60;
-    }
-
-    let difference = endTotal - startTotal;
-
-    let hours = Math.floor(difference / 60);
-    let minutes = difference % 60;
-
-    return {
-      hours: hours,
-      minutes: minutes
-    };
-  }
-
-
-  /*
-   ============================================================
-   DURATION TEXT
-   ============================================================
-  */
-
-  function getDurationText(duration) {
-
-    if (!duration) return "";
-
-    let text = "";
-
-    if (duration.hours > 0) {
-
-      text += duration.hours + " HOUR";
-
-      if (duration.hours !== 1) {
-        text += "S";
-      }
-    }
-
-    if (duration.minutes > 0) {
-
-      if (text !== "") {
-        text += " ";
-      }
-
-      text += duration.minutes + " MIN";
-    }
-
-    return text;
-  }
-
-
-  /*
-   ============================================================
-   FORMAT TIME
-   ============================================================
-  */
-
-  function formatTime(time) {
-
-    let [hour, minute] = time.split(":").map(Number);
-
-    const suffix = hour >= 12 ? "PM" : "AM";
-
-    hour = hour % 12;
-
-    if (hour === 0) {
-      hour = 12;
-    }
-
-    return (
-      hour +
-      ":" +
-      String(minute).padStart(2, "0") +
-      " " +
-      suffix
-    );
-  }
-
-
-  /*
-   ============================================================
-   GENERATE EVERYTHING
-   ============================================================
-  */
-
-  function generateStream() {
-
-    const start = document.getElementById("startTime").value;
-    const end = document.getElementById("endTime").value;
+    const end =
+        document.getElementById("endTime").value;
 
     const target =
-      document.getElementById("target").value.trim();
+        document.getElementById("target").value.trim();
 
-    const duration = calculateDuration();
+    const duration =
+        calculateDuration();
 
     if (!duration) {
-      alert("Please enter both start and end times.");
-      return;
+
+        alert("Please enter the start and end time.");
+
+        return;
     }
 
-    const durationText = getDurationText(duration);
 
-    const formattedStart = formatTime(start);
-    const formattedEnd = formatTime(end);
+    const durationString =
+        durationText(duration);
 
-    /*
-      TITLE
-    */
+    const formattedStart =
+        formatTime(start);
 
-    const title = TITLE_FORMAT
-      .replaceAll("{DURATION}", durationText);
+    const formattedEnd =
+        formatTime(end);
 
 
-    /*
-      DESCRIPTION
-    */
-
-    const description = DESCRIPTION_TEMPLATE
-      .replaceAll("{START}", formattedStart)
-      .replaceAll("{END}", formattedEnd)
-      .replaceAll("{DURATION}", durationText)
-      .replaceAll(
-        "{TARGET}",
-        target || "Focused JEE 2028 preparation"
-      );
+    const title =
+        TITLE_TEMPLATE
+        .replaceAll(
+            "{DURATION}",
+            durationString
+        );
 
 
-    /*
-      SHOW RESULTS
-    */
+    const description =
+        DESCRIPTION_TEMPLATE
+        .replaceAll(
+            "{DURATION}",
+            durationString
+        )
+        .replaceAll(
+            "{START}",
+            formattedStart
+        )
+        .replaceAll(
+            "{END}",
+            formattedEnd
+        )
+        .replaceAll(
+            "{TARGET}",
+            target ||
+            "Focused JEE 2028 preparation"
+        );
 
-    document.getElementById("titleOutput").textContent = title;
+
+    document.getElementById("titleOutput").textContent =
+        title;
 
     document.getElementById("descriptionOutput").textContent =
-      description;
-
-    document.getElementById("duration").textContent =
-      durationText;
-
-    document.getElementById("result").style.display = "block";
+        description;
 
 
-    /*
-      GENERATE THUMBNAIL
-    */
-
-    generateThumbnail(durationText);
-  }
+    document.getElementById("results").style.display =
+        "block";
 
 
-  /*
-   ============================================================
-   THUMBNAIL GENERATOR
-   ============================================================
-  */
+    generateThumbnail(durationString);
 
-  function generateThumbnail(durationText) {
+
+    document.getElementById("results").scrollIntoView({
+        behavior: "smooth"
+    });
+}
+
+
+function generateThumbnail(durationString) {
 
     const canvas =
-      document.getElementById("thumbnailCanvas");
+        document.getElementById("thumbnailCanvas");
 
-    const ctx = canvas.getContext("2d");
+    const ctx =
+        canvas.getContext("2d");
 
-    const image = new Image();
+    const image =
+        new Image();
 
-    image.src = "thumbnail-template.jpg";
+    image.onload = function() {
 
-    image.onload = function () {
-
-      /*
-        Draw the fixed thumbnail image.
-      */
-
-      ctx.drawImage(
-        image,
-        0,
-        0,
-        canvas.width,
-        canvas.height
-      );
+        ctx.clearRect(
+            0,
+            0,
+            canvas.width,
+            canvas.height
+        );
 
 
-      /*
-        IMPORTANT:
-
-        The original template already has
-        "6 HOUR" written on it.
-
-        We cover that area with black and
-        replace it with the current duration.
-      */
-
-      ctx.fillStyle = "#000000";
-
-      ctx.fillRect(
-        45,
-        210,
-        650,
-        215
-      );
+        ctx.drawImage(
+            image,
+            0,
+            0,
+            canvas.width,
+            canvas.height
+        );
 
 
-      /*
-        Duration text
-      */
+        /*
+        Cover the original duration text.
 
-      ctx.fillStyle = "#ffffff";
+        The original thumbnail has
+        "6 HOUR" approximately in this area.
+        */
 
-      ctx.font =
-        "bold 190px Arial";
+        ctx.fillStyle = "#000000";
 
-      ctx.textBaseline = "top";
+        ctx.fillRect(
+            40,
+            205,
+            720,
+            250
+        );
 
-      ctx.fillText(
-        durationText,
-        50,
-        205
-      );
+
+        ctx.fillStyle = "#ffffff";
+
+        ctx.font =
+            "bold 175px Arial";
+
+        ctx.textBaseline = "top";
+
+        ctx.fillText(
+            durationString,
+            55,
+            210
+        );
 
     };
 
-    image.onerror = function () {
 
-      /*
-        If the image doesn't exist,
-        show a simple fallback.
-      */
+    image.onerror = function() {
 
-      ctx.fillStyle = "#111111";
-      ctx.fillRect(
-        0,
-        0,
-        canvas.width,
-        canvas.height
-      );
+        ctx.fillStyle = "#090909";
 
-      ctx.fillStyle = "#ffffff";
+        ctx.fillRect(
+            0,
+            0,
+            1280,
+            720
+        );
 
-      ctx.font =
-        "bold 100px Arial";
+        ctx.fillStyle = "#ffffff";
 
-      ctx.fillText(
-        "STUDY WITH ME",
-        60,
-        100
-      );
+        ctx.font =
+            "bold 95px Arial";
 
-      ctx.font =
-        "bold 160px Arial";
+        ctx.fillText(
+            "STUDY WITH ME",
+            55,
+            70
+        );
 
-      ctx.fillText(
-        durationText,
-        60,
-        300
-      );
+        ctx.font =
+            "bold 150px Arial";
 
-      ctx.font =
-        "bold 80px Arial";
+        ctx.fillText(
+            durationString,
+            55,
+            220
+        );
 
-      ctx.fillText(
-        "SESSION",
-        60,
-        500
-      );
+        ctx.font =
+            "bold 100px Arial";
+
+        ctx.fillText(
+            "SESSION",
+            55,
+            410
+        );
+
     };
-  }
 
 
-  /*
-   ============================================================
-   COPY BUTTON
-   ============================================================
-  */
+    image.src =
+        "thumbnail-template.jpg";
+}
 
-  function copyText(elementId) {
+
+function copyText(elementId) {
 
     const text =
-      document.getElementById(elementId).textContent;
+        document.getElementById(elementId).textContent;
 
-    navigator.clipboard.writeText(text);
+    navigator.clipboard
+        .writeText(text)
+        .then(function() {
 
-    alert("Copied! ✅");
-  }
+            alert("Copied! ✅");
+
+        })
+        .catch(function() {
+
+            alert(
+                "Copy failed. Please select and copy it manually."
+            );
+
+        });
+}
 
 
-  /*
-   ============================================================
-   DOWNLOAD THUMBNAIL
-   ============================================================
-  */
-
-  function downloadThumbnail() {
+function downloadThumbnail() {
 
     const canvas =
-      document.getElementById("thumbnailCanvas");
+        document.getElementById("thumbnailCanvas");
 
     const link =
-      document.createElement("a");
+        document.createElement("a");
 
     link.download =
-      "study-with-me-thumbnail.png";
+        "study-with-me-thumbnail.png";
 
     link.href =
-      canvas.toDataURL("image/png");
+        canvas.toDataURL("image/png");
 
     link.click();
-  }
+}
 
 
-  /*
-   ============================================================
-   LIVE DURATION UPDATE
-   ============================================================
-  */
-
-  document
+document
     .getElementById("startTime")
-    .addEventListener("change", updateDuration);
+    .addEventListener(
+        "change",
+        updateDuration
+    );
 
-  document
+
+document
     .getElementById("endTime")
-    .addEventListener("change", updateDuration);
+    .addEventListener(
+        "change",
+        updateDuration
+    );
 
 
-  function updateDuration() {
-
-    const duration = calculateDuration();
-
-    if (!duration) return;
-
-    document.getElementById("duration").textContent =
-      getDurationText(duration);
-  }
-
-</script>
-
-</body>
-</html>
-   ============================================================
-  */
-
-  document
-    .getElementById("startTime")
-    .addEventListener("change", updateDuration);
-
-  document
-    .getElementById("endTime")
-    .addEventListener("change", updateDuration);
-
-
-  function updateDuration() {
-
-    const duration = calculateDuration();
-
-    if (!duration) return;
-
-    document.getElementById("duration").textContent =
-      getDurationText(duration);
-  }
+updateDuration();
 
 </script>
 
