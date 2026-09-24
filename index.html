@@ -39,61 +39,13 @@ body {
 
 
 /* =========================
-   NAVIGATION
-========================= */
-
-.nav {
-    width: 100%;
-    height: 72px;
-    border-bottom: 1px solid #202020;
-    display: flex;
-    align-items: center;
-}
-
-.nav-inner {
-    width: 100%;
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 0 28px;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.logo {
-    color: #ffffff;
-    text-decoration: none;
-    font-size: 15px;
-    font-weight: 700;
-    letter-spacing: 2px;
-}
-
-.nav-right {
-    display: flex;
-    align-items: center;
-    gap: 25px;
-}
-
-.nav-link {
-    color: #999;
-    text-decoration: none;
-    font-size: 14px;
-    transition: color 0.2s ease;
-}
-
-.nav-link:hover {
-    color: #ffffff;
-}
-
-
-/* =========================
    PAGE
 ========================= */
 
 .page {
     width: 100%;
-    min-height: calc(100vh - 72px);
+    min-height: 100vh;
+
     display: flex;
     justify-content: center;
 }
@@ -101,7 +53,8 @@ body {
 .container {
     width: 100%;
     max-width: 780px;
-    padding: 70px 24px 90px;
+
+    padding: 70px 24px 80px;
 }
 
 
@@ -119,7 +72,9 @@ body {
 
     font-size: 42px;
     line-height: 1.1;
+
     font-weight: 700;
+
     letter-spacing: -1px;
 }
 
@@ -127,19 +82,21 @@ body {
     margin: 15px 0 0;
 
     color: #8d8d8d;
+
     font-size: 16px;
     line-height: 1.6;
 }
 
 
 /* =========================
-   MAIN CARD
+   CARD
 ========================= */
 
 .card {
     width: 100%;
 
     background: #111111;
+
     border: 1px solid #292929;
     border-radius: 18px;
 
@@ -165,6 +122,7 @@ body {
 
     font-size: 22px;
     font-weight: 600;
+
     letter-spacing: 0.2px;
 }
 
@@ -175,7 +133,9 @@ body {
 
 .time-grid {
     display: grid;
+
     grid-template-columns: 1fr 1fr;
+
     gap: 18px;
 }
 
@@ -188,6 +148,7 @@ label {
 
     font-size: 13px;
     font-weight: 600;
+
     color: #cfcfcf;
 
     margin-bottom: 9px;
@@ -200,6 +161,7 @@ textarea {
     width: 100%;
 
     background: #090909;
+
     color: #ffffff;
 
     border: 1px solid #303030;
@@ -225,12 +187,15 @@ textarea:hover {
 input:focus,
 textarea:focus {
     border-color: #666666;
+
     background: #0b0b0b;
 }
 
 textarea {
     resize: vertical;
+
     min-height: 115px;
+
     line-height: 1.5;
 }
 
@@ -306,6 +271,7 @@ textarea {
 
 .results {
     display: none;
+
     margin-top: 24px;
 }
 
@@ -313,6 +279,7 @@ textarea {
     width: 100%;
 
     background: #111111;
+
     border: 1px solid #292929;
     border-radius: 18px;
 
@@ -355,11 +322,13 @@ textarea {
     padding: 16px;
 
     white-space: pre-wrap;
+
     line-height: 1.55;
 
     word-break: break-word;
 
     font-size: 14px;
+
     color: #eeeeee;
 }
 
@@ -370,7 +339,9 @@ textarea {
 
 .button-row {
     display: flex;
+
     gap: 10px;
+
     margin-top: 10px;
 }
 
@@ -398,11 +369,13 @@ textarea {
 
 .copy-button {
     background: #181818;
+
     color: #ffffff;
 }
 
 .copy-button:hover {
     background: #202020;
+
     border-color: #414141;
 }
 
@@ -412,7 +385,9 @@ textarea {
 
 .copy-button.copied {
     background: #ffffff;
+
     color: #000000;
+
     border-color: #ffffff;
 }
 
@@ -425,6 +400,7 @@ textarea {
     color: #666666;
 
     font-size: 12px;
+
     line-height: 1.5;
 
     margin-top: 10px;
@@ -438,11 +414,12 @@ textarea {
 .footer {
     text-align: center;
 
-    margin-top: 55px;
+    margin-top: 45px;
 
-    color: #555555;
+    color: #4f4f4f;
 
     font-size: 12px;
+
     letter-spacing: 0.2px;
 }
 
@@ -452,26 +429,6 @@ textarea {
 ========================= */
 
 @media (max-width: 600px) {
-
-    .nav {
-        height: 64px;
-    }
-
-    .nav-inner {
-        padding: 0 20px;
-    }
-
-    .nav-right {
-        gap: 17px;
-    }
-
-    .nav-link {
-        font-size: 13px;
-    }
-
-    .page {
-        min-height: calc(100vh - 64px);
-    }
 
     .container {
         padding: 48px 16px 65px;
@@ -483,27 +440,32 @@ textarea {
 
     .header h1 {
         font-size: 31px;
+
         letter-spacing: -0.6px;
     }
 
     .header p {
         font-size: 14px;
+
         margin-top: 12px;
     }
 
     .card,
     .result-card {
         padding: 22px;
+
         border-radius: 15px;
     }
 
     .card h2 {
         font-size: 20px;
+
         margin-bottom: 25px;
     }
 
     .time-grid {
         grid-template-columns: 1fr;
+
         gap: 0;
     }
 
@@ -540,50 +502,6 @@ textarea {
 <body>
 
 
-<!-- =========================
-     NAVIGATION
-========================= -->
-
-<nav class="nav">
-
-    <div class="nav-inner">
-
-        <a
-            href="https://aditya20490.github.io/"
-            class="logo"
-        >
-            ADITYA
-        </a>
-
-        <div class="nav-right">
-
-            <a
-                href="https://aditya20490.github.io/"
-                class="nav-link"
-            >
-                Home
-            </a>
-
-            <a
-                href="https://github.com/aditya20490"
-                class="nav-link"
-                target="_blank"
-                rel="noopener"
-            >
-                GitHub ↗
-            </a>
-
-        </div>
-
-    </div>
-
-</nav>
-
-
-<!-- =========================
-     PAGE
-========================= -->
-
 <div class="page">
 
 <div class="container">
@@ -593,7 +511,9 @@ textarea {
 
     <div class="header">
 
-        <h1>Study Stream Generator</h1>
+        <h1>
+            Study Stream Generator
+        </h1>
 
         <p>
             Generate your stream details in seconds.
@@ -606,7 +526,9 @@ textarea {
 
     <div class="card">
 
-        <h2>New Study Session</h2>
+        <h2>
+            New Study Session
+        </h2>
 
 
         <div class="time-grid">
@@ -692,7 +614,9 @@ textarea {
 
             <div class="result-section">
 
-                <h3>Title</h3>
+                <h3>
+                    Title
+                </h3>
 
                 <div
                     class="output"
@@ -717,7 +641,9 @@ textarea {
 
             <div class="result-section">
 
-                <h3>Description</h3>
+                <h3>
+                    Description
+                </h3>
 
                 <div
                     class="output"
@@ -742,7 +668,9 @@ textarea {
 
             <div class="result-section">
 
-                <h3>Gemini Thumbnail Prompt</h3>
+                <h3>
+                    Gemini Thumbnail Prompt
+                </h3>
 
                 <div
                     class="output"
@@ -1036,7 +964,6 @@ function generateStream() {
 
 
     if (!duration) {
-
         return;
     }
 
@@ -1171,8 +1098,7 @@ function copyText(elementId, button) {
         .catch(
             function() {
 
-                /* No popup.
-                   Copy simply fails silently. */
+                /* No popup */
 
             }
         );
@@ -1200,12 +1126,9 @@ document
     );
 
 
-/* INITIAL DURATION */
-
 updateDuration();
 
 </script>
-
 
 </body>
 
