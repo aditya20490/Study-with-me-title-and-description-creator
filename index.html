@@ -6,242 +6,337 @@
 
 <title>Study Stream Generator</title>
 
-<!-- Free font used for the thumbnail -->
+<!-- Font for thumbnail -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+<link
+    href="https://fonts.googleapis.com/css2?family=Anton&display=swap"
+    rel="stylesheet"
+>
 
 <style>
-    * {
-        box-sizing: border-box;
+
+/* =========================================================
+   GLOBAL
+========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: #050505;
+    color: #f5f5f5;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.container {
+    width: min(780px, calc(100% - 32px));
+    margin: 50px auto;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+h1 {
+    margin: 0;
+    font-size: 32px;
+    letter-spacing: -1px;
+}
+
+.subtitle {
+    margin-top: 8px;
+    color: #888;
+    font-size: 15px;
+}
+
+
+/* =========================================================
+   CARD
+========================================================= */
+
+.card {
+    margin-top: 28px;
+    padding: 24px;
+    background: #0d0d0d;
+    border: 1px solid #222;
+    border-radius: 14px;
+}
+
+.card h2 {
+    margin-top: 0;
+    font-size: 20px;
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+label {
+    display: block;
+    margin-top: 20px;
+    margin-bottom: 8px;
+    color: #aaa;
+    font-size: 14px;
+}
+
+input,
+textarea {
+    width: 100%;
+    padding: 13px 14px;
+    border-radius: 9px;
+    border: 1px solid #292929;
+    background: #080808;
+    color: white;
+    outline: none;
+    font-size: 15px;
+}
+
+input:focus,
+textarea:focus {
+    border-color: #555;
+}
+
+textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.time-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+
+/* =========================================================
+   DURATION
+========================================================= */
+
+.duration {
+    margin-top: 14px;
+    padding: 12px;
+    background: #111;
+    border-radius: 8px;
+    color: #aaa;
+    font-size: 14px;
+}
+
+.duration strong {
+    color: white;
+}
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+button {
+    border: 0;
+    border-radius: 9px;
+    padding: 13px 18px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.generate-btn {
+    width: 100%;
+    margin-top: 22px;
+    background: white;
+    color: black;
+}
+
+.generate-btn:hover {
+    background: #ddd;
+}
+
+.generate-btn:disabled {
+    opacity: 0.5;
+    cursor: wait;
+}
+
+
+/* =========================================================
+   RESULTS
+========================================================= */
+
+.result {
+    display: none;
+    margin-top: 28px;
+}
+
+.result-section {
+    margin-bottom: 28px;
+}
+
+.result-label {
+    margin-bottom: 8px;
+    color: #888;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+
+/* =========================================================
+   RESULT BOX
+========================================================= */
+
+.result-box {
+    padding: 15px;
+    background: #090909;
+    border: 1px solid #222;
+    border-radius: 9px;
+    white-space: pre-wrap;
+    line-height: 1.5;
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   COPY BUTTON
+
+   IMPORTANT:
+   The button is OUTSIDE the text box visually.
+========================================================= */
+
+.copy-btn {
+    display: block;
+    margin-top: 8px;
+
+    padding: 7px 12px;
+
+    background: #1d1d1d;
+    color: white;
+
+    border: 1px solid #292929;
+    border-radius: 7px;
+
+    font-size: 12px;
+}
+
+.copy-btn:hover {
+    background: #2a2a2a;
+}
+
+
+/* =========================================================
+   THUMBNAIL
+========================================================= */
+
+.thumbnail-wrapper {
+    margin-top: 10px;
+    overflow: hidden;
+    border-radius: 10px;
+    border: 1px solid #222;
+    background: #000;
+}
+
+#thumbnailPreview {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.download-btn {
+    width: 100%;
+    margin-top: 12px;
+    background: white;
+    color: black;
+}
+
+.download-btn:hover {
+    background: #ddd;
+}
+
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.status {
+    display: none;
+    margin-top: 15px;
+    text-align: center;
+    color: #999;
+    font-size: 14px;
+}
+
+.spinner {
+    display: inline-block;
+
+    width: 13px;
+    height: 13px;
+
+    border: 2px solid #555;
+    border-top-color: white;
+
+    border-radius: 50%;
+
+    animation: spin 0.8s linear infinite;
+
+    vertical-align: -2px;
+    margin-right: 6px;
+}
+
+@keyframes spin {
+
+    to {
+        transform: rotate(360deg);
     }
 
-    body {
-        margin: 0;
-        background: #050505;
-        color: #f5f5f5;
-        font-family: Arial, Helvetica, sans-serif;
-    }
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+footer {
+    margin-top: 35px;
+    text-align: center;
+    color: #555;
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
 
     .container {
-        width: min(780px, calc(100% - 32px));
-        margin: 50px auto;
+        margin: 30px auto;
     }
 
     h1 {
-        margin: 0;
-        font-size: 32px;
-        letter-spacing: -1px;
-    }
-
-    .subtitle {
-        margin-top: 8px;
-        color: #888;
-        font-size: 15px;
-    }
-
-    .card {
-        margin-top: 28px;
-        padding: 24px;
-        background: #0d0d0d;
-        border: 1px solid #222;
-        border-radius: 14px;
-    }
-
-    .card h2 {
-        margin-top: 0;
-        font-size: 20px;
-    }
-
-    label {
-        display: block;
-        margin-top: 20px;
-        margin-bottom: 8px;
-        color: #aaa;
-        font-size: 14px;
-    }
-
-    input,
-    textarea {
-        width: 100%;
-        padding: 13px 14px;
-        border-radius: 9px;
-        border: 1px solid #292929;
-        background: #080808;
-        color: white;
-        outline: none;
-        font-size: 15px;
-    }
-
-    input:focus,
-    textarea:focus {
-        border-color: #555;
-    }
-
-    textarea {
-        min-height: 120px;
-        resize: vertical;
+        font-size: 26px;
     }
 
     .time-row {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 14px;
+        grid-template-columns: 1fr;
     }
 
-    .duration {
-        margin-top: 14px;
-        padding: 12px;
-        background: #111;
-        border-radius: 8px;
-        color: #aaa;
-        font-size: 14px;
-    }
+}
 
-    .duration strong {
-        color: white;
-    }
-
-    button {
-        border: 0;
-        border-radius: 9px;
-        padding: 13px 18px;
-        font-size: 15px;
-        font-weight: 700;
-        cursor: pointer;
-    }
-
-    .generate-btn {
-        width: 100%;
-        margin-top: 22px;
-        background: white;
-        color: black;
-    }
-
-    .generate-btn:hover {
-        background: #ddd;
-    }
-
-    .generate-btn:disabled {
-        opacity: 0.5;
-        cursor: wait;
-    }
-
-    .result {
-        display: none;
-        margin-top: 28px;
-    }
-
-    .result-section {
-        margin-bottom: 25px;
-    }
-
-    .result-label {
-        margin-bottom: 8px;
-        color: #888;
-        font-size: 13px;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
-
-    .result-box {
-        position: relative;
-        padding: 15px 90px 15px 15px;
-        background: #090909;
-        border: 1px solid #222;
-        border-radius: 9px;
-        white-space: pre-wrap;
-        line-height: 1.5;
-        font-size: 14px;
-    }
-
-    .copy-btn {
-        position: absolute;
-        right: 8px;
-        top: 8px;
-        padding: 7px 10px;
-        background: #1d1d1d;
-        color: white;
-        font-size: 12px;
-    }
-
-    .copy-btn:hover {
-        background: #2a2a2a;
-    }
-
-    .thumbnail-wrapper {
-        margin-top: 10px;
-        overflow: hidden;
-        border-radius: 10px;
-        border: 1px solid #222;
-        background: #000;
-    }
-
-    #thumbnailPreview {
-        display: block;
-        width: 100%;
-        height: auto;
-    }
-
-    .download-btn {
-        width: 100%;
-        margin-top: 12px;
-        background: white;
-        color: black;
-    }
-
-    .status {
-        display: none;
-        margin-top: 15px;
-        text-align: center;
-        color: #999;
-        font-size: 14px;
-    }
-
-    .spinner {
-        display: inline-block;
-        width: 13px;
-        height: 13px;
-        border: 2px solid #555;
-        border-top-color: white;
-        border-radius: 50%;
-        animation: spin 0.8s linear infinite;
-        vertical-align: -2px;
-        margin-right: 6px;
-    }
-
-    @keyframes spin {
-        to {
-            transform: rotate(360deg);
-        }
-    }
-
-    footer {
-        margin-top: 35px;
-        text-align: center;
-        color: #555;
-        font-size: 13px;
-    }
-
-    @media (max-width: 600px) {
-        .container {
-            margin: 30px auto;
-        }
-
-        h1 {
-            font-size: 26px;
-        }
-
-        .time-row {
-            grid-template-columns: 1fr;
-        }
-    }
 </style>
 </head>
+
 
 <body>
 
 <div class="container">
+
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
 
     <h1>Study Stream Generator</h1>
 
@@ -249,28 +344,64 @@
         Generate your YouTube study stream details and thumbnail.
     </div>
 
+
+    <!-- =====================================================
+         INPUT CARD
+    ====================================================== -->
+
     <div class="card">
 
         <h2>New Study Session</h2>
 
+
         <div class="time-row">
 
             <div>
-                <label for="startTime">Start Time</label>
-                <input type="time" id="startTime" value="07:00">
+
+                <label for="startTime">
+                    Start Time
+                </label>
+
+                <input
+                    type="time"
+                    id="startTime"
+                    value="07:00"
+                >
+
             </div>
+
 
             <div>
-                <label for="endTime">End Time</label>
-                <input type="time" id="endTime" value="12:30">
+
+                <label for="endTime">
+                    End Time
+                </label>
+
+                <input
+                    type="time"
+                    id="endTime"
+                    value="12:30"
+                >
+
             </div>
 
         </div>
 
+
+        <!-- Duration -->
+
         <div class="duration">
+
             Duration:
-            <strong id="durationDisplay">5 HOUR 30 MIN</strong>
+
+            <strong id="durationDisplay">
+                5 HOUR 30 MIN
+            </strong>
+
         </div>
+
+
+        <!-- Target -->
 
         <label for="target">
             Today's Study Target
@@ -281,6 +412,9 @@
             placeholder="Example: Complete Electrostatics lectures and solve PYQs."
         ></textarea>
 
+
+        <!-- Generate -->
+
         <button
             class="generate-btn"
             id="generateBtn"
@@ -289,15 +423,37 @@
             Generate
         </button>
 
-        <div class="status" id="status">
+
+        <!-- Loading -->
+
+        <div
+            class="status"
+            id="status"
+        >
+
             <span class="spinner"></span>
+
             Generating thumbnail...
+
         </div>
 
     </div>
 
 
-    <div class="card result" id="result">
+
+    <!-- =====================================================
+         RESULTS
+    ====================================================== -->
+
+    <div
+        class="card result"
+        id="result"
+    >
+
+
+        <!-- =================================================
+             TITLE
+        ================================================== -->
 
         <div class="result-section">
 
@@ -305,21 +461,27 @@
                 Title
             </div>
 
-            <div class="result-box">
 
-                <span id="titleOutput"></span>
+            <div
+                class="result-box"
+                id="titleOutput"
+            ></div>
 
-                <button
-                    class="copy-btn"
-                    onclick="copyText('titleOutput', this)"
-                >
-                    Copy
-                </button>
 
-            </div>
+            <button
+                class="copy-btn"
+                onclick="copyText('titleOutput', this)"
+            >
+                Copy
+            </button>
 
         </div>
 
+
+
+        <!-- =================================================
+             DESCRIPTION
+        ================================================== -->
 
         <div class="result-section">
 
@@ -327,27 +489,34 @@
                 Description
             </div>
 
-            <div class="result-box">
 
-                <span id="descriptionOutput"></span>
+            <div
+                class="result-box"
+                id="descriptionOutput"
+            ></div>
 
-                <button
-                    class="copy-btn"
-                    onclick="copyText('descriptionOutput', this)"
-                >
-                    Copy
-                </button>
 
-            </div>
+            <button
+                class="copy-btn"
+                onclick="copyText('descriptionOutput', this)"
+            >
+                Copy
+            </button>
 
         </div>
 
+
+
+        <!-- =================================================
+             THUMBNAIL
+        ================================================== -->
 
         <div class="result-section">
 
             <div class="result-label">
                 Thumbnail
             </div>
+
 
             <div class="thumbnail-wrapper">
 
@@ -357,6 +526,7 @@
                 >
 
             </div>
+
 
             <button
                 class="download-btn"
@@ -370,11 +540,17 @@
     </div>
 
 
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
     <footer>
         Built by ADITYA
     </footer>
 
 </div>
+
 
 
 <script>
@@ -383,12 +559,31 @@
    CONFIGURATION
 ========================================================= */
 
-const MASTER_THUMBNAIL = "master-thumbnail.png";
+/*
+    Your master thumbnail must be in the same folder
+    as this index.html file.
+*/
+
+const MASTER_THUMBNAIL =
+    "master-thumbnail.png";
+
+
+/*
+    Your uploaded master image is:
+
+    1536 × 865
+*/
 
 const CANVAS_WIDTH = 1536;
 const CANVAS_HEIGHT = 865;
 
+
+/*
+    Stores the currently generated PNG URL.
+*/
+
 let generatedThumbnailURL = null;
+
 
 
 /* =========================================================
@@ -399,10 +594,15 @@ function getTodayDate() {
 
     const today = new Date();
 
+
     const day =
-        String(today.getDate()).padStart(2, "0");
+        String(
+            today.getDate()
+        ).padStart(2, "0");
+
 
     const months = [
+
         "JANUARY",
         "FEBRUARY",
         "MARCH",
@@ -415,111 +615,189 @@ function getTodayDate() {
         "OCTOBER",
         "NOVEMBER",
         "DECEMBER"
+
     ];
 
+
     const month =
-        months[today.getMonth()];
+        months[
+            today.getMonth()
+        ];
+
 
     const year =
         today.getFullYear();
+
 
     return `${day} ${month} ${year}`;
 }
 
 
+
 /* =========================================================
-   DURATION
+   CALCULATE DURATION
 ========================================================= */
 
 function calculateDuration() {
 
     const start =
-        document.getElementById("startTime").value;
+        document.getElementById(
+            "startTime"
+        ).value;
+
 
     const end =
-        document.getElementById("endTime").value;
+        document.getElementById(
+            "endTime"
+        ).value;
+
 
     if (!start || !end) {
         return 0;
     }
 
-    const [startHour, startMinute] =
-        start.split(":").map(Number);
 
-    const [endHour, endMinute] =
-        end.split(":").map(Number);
+    const [
+        startHour,
+        startMinute
+    ] =
+        start
+            .split(":")
+            .map(Number);
+
+
+    const [
+        endHour,
+        endMinute
+    ] =
+        end
+            .split(":")
+            .map(Number);
+
 
     let startTotal =
-        startHour * 60 + startMinute;
+        startHour * 60 +
+        startMinute;
+
 
     let endTotal =
-        endHour * 60 + endMinute;
+        endHour * 60 +
+        endMinute;
+
+
+    /*
+        Supports overnight sessions.
+    */
 
     if (endTotal <= startTotal) {
+
         endTotal += 1440;
+
     }
+
 
     return endTotal - startTotal;
 }
 
 
+
+/* =========================================================
+   DURATION TEXT
+========================================================= */
+
 function durationText(totalMinutes) {
 
     const hours =
-        Math.floor(totalMinutes / 60);
+        Math.floor(
+            totalMinutes / 60
+        );
+
 
     const minutes =
         totalMinutes % 60;
 
+
     let result = "";
+
 
     if (hours > 0) {
 
-        result += `${hours} HOUR`;
+        result +=
+            `${hours} HOUR`;
+
 
         if (hours !== 1) {
+
             result += "S";
+
         }
+
     }
+
 
     if (minutes > 0) {
 
         if (result) {
+
             result += " ";
+
         }
 
-        result += `${minutes} MIN`;
+
+        result +=
+            `${minutes} MIN`;
+
     }
+
 
     return result || "0 MIN";
 }
 
 
+
 /* =========================================================
-   TIME FORMAT
+   FORMAT TIME
 ========================================================= */
 
 function formatTime(time) {
 
-    const [hour, minute] =
-        time.split(":").map(Number);
+    const [
+        hour,
+        minute
+    ] =
+        time
+            .split(":")
+            .map(Number);
+
 
     const suffix =
-        hour >= 12 ? "PM" : "AM";
+        hour >= 12
+            ? "PM"
+            : "AM";
+
 
     let displayHour =
         hour % 12;
 
+
     if (displayHour === 0) {
+
         displayHour = 12;
+
     }
 
-    return `${displayHour}:${String(minute).padStart(2, "0")} ${suffix}`;
+
+    return (
+        `${displayHour}:` +
+        `${String(minute).padStart(2, "0")} ` +
+        suffix
+    );
 }
 
 
+
 /* =========================================================
-   LIVE DURATION
+   UPDATE LIVE DURATION
 ========================================================= */
 
 function updateDuration() {
@@ -527,33 +805,55 @@ function updateDuration() {
     const minutes =
         calculateDuration();
 
+
     document.getElementById(
         "durationDisplay"
     ).textContent =
         durationText(minutes);
 }
 
-document.getElementById("startTime")
-    .addEventListener("change", updateDuration);
 
-document.getElementById("endTime")
-    .addEventListener("change", updateDuration);
+document
+    .getElementById("startTime")
+    .addEventListener(
+        "change",
+        updateDuration
+    );
+
+
+document
+    .getElementById("endTime")
+    .addEventListener(
+        "change",
+        updateDuration
+    );
+
 
 updateDuration();
 
 
+
 /* =========================================================
-   TITLE
+   TITLE GENERATOR
 ========================================================= */
 
-function generateTitle(duration, date) {
+function generateTitle(
+    duration,
+    date
+) {
 
-    return `Study With Me | ${duration} Session | ${date} | JEE 2028`;
+    return (
+        `Study With Me | ` +
+        `${duration} Session | ` +
+        `${date} | ` +
+        `JEE 2028`
+    );
 }
 
 
+
 /* =========================================================
-   DESCRIPTION
+   DESCRIPTION GENERATOR
 ========================================================= */
 
 function generateDescription(
@@ -564,7 +864,8 @@ function generateDescription(
     target
 ) {
 
-    return `Study with me for a focused ${duration} JEE 2028 study session.
+    return (
+`Study with me for a focused ${duration} JEE 2028 study session.
 
 📅 Date: ${date}
 🕐 Session: ${start} → ${end}
@@ -576,38 +877,51 @@ ${target || "Focused JEE 2028 preparation"}
 
 Grab your books and study along with me.
 
-#JEE2028 #StudyWithMe #JEE`;
+#JEE2028 #StudyWithMe #JEE`
+    );
 }
 
 
+
 /* =========================================================
-   IMAGE LOADER
+   LOAD IMAGE
 ========================================================= */
 
 function loadImage(src) {
 
-    return new Promise((resolve, reject) => {
+    return new Promise(
+        (resolve, reject) => {
 
-        const image = new Image();
+            const image =
+                new Image();
 
-        image.onload = () => resolve(image);
 
-        image.onerror = () => {
+            image.onload =
+                () => resolve(image);
 
-            reject(
-                new Error(
-                    "master-thumbnail.png could not be loaded. Make sure it is in the same GitHub repository as index.html."
-                )
-            );
-        };
 
-        image.src = src;
-    });
+            image.onerror =
+                () => {
+
+                    reject(
+                        new Error(
+                            "master-thumbnail.png could not be loaded. Make sure it is in the same folder as index.html."
+                        )
+                    );
+
+                };
+
+
+            image.src = src;
+
+        }
+    );
 }
 
 
+
 /* =========================================================
-   FONT
+   LOAD FONT
 ========================================================= */
 
 async function loadThumbnailFont() {
@@ -618,89 +932,521 @@ async function loadThumbnailFont() {
             '100px "Anton"'
         );
 
-    } catch (error) {
+    }
+
+    catch (error) {
 
         console.log(
             "Anton font could not be loaded. Using fallback."
         );
+
     }
 }
 
 
+
 /* =========================================================
-   FIT TEXT
+   MEASURE LETTER-SPACED TEXT
 ========================================================= */
 
-function fitText(
+function measureLetterSpacedText(
+    ctx,
+    text,
+    spacing
+) {
+
+    let width = 0;
+
+
+    for (const char of text) {
+
+        width +=
+            ctx.measureText(char).width;
+
+    }
+
+
+    /*
+        Add spacing between characters,
+        but not after the final character.
+    */
+
+    width +=
+        Math.max(
+            0,
+            text.length - 1
+        ) * spacing;
+
+
+    return width;
+}
+
+
+
+/* =========================================================
+   FIND FITTING FONT SIZE
+========================================================= */
+
+function fitLetterSpacedText(
     ctx,
     text,
     maxWidth,
-    startingSize
+    startingSize,
+    spacing
 ) {
 
-    let size = startingSize;
+    let size =
+        startingSize;
+
 
     while (size > 20) {
 
         ctx.font =
             `normal ${size}px "Anton", Impact, sans-serif`;
 
+
+        const width =
+            measureLetterSpacedText(
+                ctx,
+                text,
+                spacing
+            );
+
+
         if (
-            ctx.measureText(text).width <= maxWidth
+            width <= maxWidth
         ) {
+
             break;
+
         }
 
+
         size--;
+
     }
+
 
     return size;
 }
 
 
+
 /* =========================================================
-   DRAW THUMBNAIL TEXT
+   DRAW LETTER-SPACED TEXT
 ========================================================= */
 
-function drawThumbnailText(
+function drawLetterSpacedText(
     ctx,
     text,
     x,
-    baseline,
+    top,
     maxWidth,
-    startingSize
+    startingSize,
+    spacing
 ) {
 
     const size =
-        fitText(
+        fitLetterSpacedText(
             ctx,
             text,
             maxWidth,
-            startingSize
+            startingSize,
+            spacing
         );
+
 
     ctx.font =
         `normal ${size}px "Anton", Impact, sans-serif`;
 
-    ctx.textAlign = "left";
-    ctx.textBaseline = "alphabetic";
 
-    ctx.fillStyle = "#ffffff";
+    ctx.textAlign =
+        "left";
 
-    ctx.shadowColor = "rgba(0,0,0,0.15)";
+
+    ctx.textBaseline =
+        "top";
+
+
+    ctx.fillStyle =
+        "#ffffff";
+
+
+    /*
+        Very subtle shadow.
+    */
+
+    ctx.shadowColor =
+        "rgba(0,0,0,0.15)";
+
     ctx.shadowBlur = 1;
+
     ctx.shadowOffsetX = 0;
+
     ctx.shadowOffsetY = 1;
 
+
+    let currentX =
+        x;
+
+
+    /*
+        Draw each character individually
+        to control letter spacing.
+    */
+
+    for (
+        const char of text
+    ) {
+
+        ctx.fillText(
+            char,
+            currentX,
+            top
+        );
+
+
+        currentX +=
+            ctx.measureText(char).width +
+            spacing;
+
+    }
+
+
+    /*
+        Reset shadow.
+    */
+
+    ctx.shadowColor =
+        "transparent";
+
+    ctx.shadowBlur = 0;
+
+    ctx.shadowOffsetX = 0;
+
+    ctx.shadowOffsetY = 0;
+
+
+    return {
+
+        size: size,
+
+        height: size
+
+    };
+}
+
+
+
+/* =========================================================
+   DRAW TIME LINE
+=========================================================
+
+   This is specially handled because the arrow should
+   sit vertically in the CENTER of the text rather than
+   sitting on the text baseline.
+========================================================= */
+
+function drawTimeLine(
+    ctx,
+    start,
+    end,
+    x,
+    top,
+    maxWidth,
+    startingSize
+) {
+
+    /*
+        Slight letter spacing.
+    */
+
+    const spacing = 2.5;
+
+
+    let size =
+        startingSize;
+
+
+    /*
+        Keep reducing font size until
+        the complete line fits.
+    */
+
+    while (size > 20) {
+
+        ctx.font =
+            `normal ${size}px "Anton", Impact, sans-serif`;
+
+
+        const startWidth =
+            measureLetterSpacedText(
+                ctx,
+                start,
+                spacing
+            );
+
+
+        const endWidth =
+            measureLetterSpacedText(
+                ctx,
+                end,
+                spacing
+            );
+
+
+        ctx.font =
+            `normal ${size}px Arial, sans-serif`;
+
+
+        const arrowWidth =
+            ctx.measureText("→").width;
+
+
+        const totalWidth =
+            startWidth +
+            arrowWidth +
+            48 +
+            20;
+
+
+        if (
+            totalWidth <= maxWidth
+        ) {
+
+            break;
+
+        }
+
+
+        size--;
+
+    }
+
+
+    /*
+        Measure final text.
+    */
+
+    ctx.font =
+        `normal ${size}px "Anton", Impact, sans-serif`;
+
+
+    const startWidth =
+        measureLetterSpacedText(
+            ctx,
+            start,
+            spacing
+        );
+
+
+    const endWidth =
+        measureLetterSpacedText(
+            ctx,
+            end,
+            spacing
+        );
+
+
+    ctx.font =
+        `normal ${size}px Arial, sans-serif`;
+
+
+    const arrowWidth =
+        ctx.measureText("→").width;
+
+
+    /*
+        Gap around arrow.
+    */
+
+    const gap =
+        24;
+
+
+    /*
+        Total line width.
+    */
+
+    const totalWidth =
+        startWidth +
+        gap +
+        arrowWidth +
+        gap +
+        endWidth;
+
+
+    /*
+        Start at supplied X.
+    */
+
+    let currentX =
+        x;
+
+
+    /*
+        White text.
+    */
+
+    ctx.fillStyle =
+        "#ffffff";
+
+
+    ctx.shadowColor =
+        "rgba(0,0,0,0.15)";
+
+    ctx.shadowBlur = 1;
+
+    ctx.shadowOffsetX = 0;
+
+    ctx.shadowOffsetY = 1;
+
+
+    /*
+        Draw START time.
+    */
+
+    ctx.font =
+        `normal ${size}px "Anton", Impact, sans-serif`;
+
+    ctx.textBaseline =
+        "top";
+
+
+    for (
+        const char of start
+    ) {
+
+        ctx.fillText(
+            char,
+            currentX,
+            top
+        );
+
+
+        currentX +=
+            ctx.measureText(char).width +
+            spacing;
+
+    }
+
+
+    /*
+        Move to arrow.
+    */
+
+    currentX += gap;
+
+
+    /*
+        The arrow uses a normal sans-serif font.
+        This gives it a cleaner shape and allows
+        us to center it vertically.
+    */
+
+    ctx.font =
+        `normal ${size}px Arial, sans-serif`;
+
+
+    const arrowMetrics =
+        ctx.measureText("→");
+
+
+    const arrowAscent =
+        arrowMetrics.actualBoundingBoxAscent ||
+        size * 0.75;
+
+
+    const arrowDescent =
+        arrowMetrics.actualBoundingBoxDescent ||
+        size * 0.20;
+
+
+    /*
+        Find center of the surrounding text.
+    */
+
+    const textCenter =
+        top +
+        size * 0.50;
+
+
+    /*
+        Position arrow around that center.
+    */
+
+    const arrowBaseline =
+        textCenter +
+        (
+            arrowAscent -
+            arrowDescent
+        ) / 2;
+
+
+    ctx.textBaseline =
+        "alphabetic";
+
+
     ctx.fillText(
-        text,
-        x,
-        baseline
+        "→",
+        currentX,
+        arrowBaseline
     );
 
-    ctx.shadowColor = "transparent";
+
+    /*
+        Move past arrow.
+    */
+
+    currentX +=
+        arrowWidth +
+        gap;
+
+
+    /*
+        Draw END time.
+    */
+
+    ctx.font =
+        `normal ${size}px "Anton", Impact, sans-serif`;
+
+
+    ctx.textBaseline =
+        "top";
+
+
+    for (
+        const char of end
+    ) {
+
+        ctx.fillText(
+            char,
+            currentX,
+            top
+        );
+
+
+        currentX +=
+            ctx.measureText(char).width +
+            spacing;
+
+    }
+
+
+    /*
+        Reset shadow.
+    */
+
+    ctx.shadowColor =
+        "transparent";
+
     ctx.shadowBlur = 0;
+
+    ctx.shadowOffsetX = 0;
+
+    ctx.shadowOffsetY = 0;
 }
+
 
 
 /* =========================================================
@@ -714,29 +1460,49 @@ async function createThumbnail(
     date
 ) {
 
+    /*
+        Make sure Anton is loaded.
+    */
+
     await loadThumbnailFont();
 
-    const image =
-        await loadImage(MASTER_THUMBNAIL);
 
+    /*
+        Load master image.
+    */
+
+    const image =
+        await loadImage(
+            MASTER_THUMBNAIL
+        );
+
+
+    /*
+        Create canvas.
+    */
 
     const canvas =
-        document.createElement("canvas");
+        document.createElement(
+            "canvas"
+        );
 
 
     canvas.width =
         CANVAS_WIDTH;
+
 
     canvas.height =
         CANVAS_HEIGHT;
 
 
     const ctx =
-        canvas.getContext("2d");
+        canvas.getContext(
+            "2d"
+        );
 
 
     /*
-       Draw clean master artwork.
+        Draw the master artwork.
     */
 
     ctx.drawImage(
@@ -748,113 +1514,183 @@ async function createThumbnail(
     );
 
 
+    /* =====================================================
+       THUMBNAIL TEXT SETTINGS
+    ====================================================== */
+
     /*
-       EXACT TEXT POSITIONS
-       Based on your uploaded 1536 × 865 thumbnail.
+        Left edge based on your actual thumbnail.
     */
 
     const x = 78;
+
+
+    /*
+        Dynamic text should stay on the left side,
+        away from the character.
+    */
 
     const maxWidth = 1050;
 
 
     /*
-       1. STUDY WITH ME
+        This controls the additional breathing room
+        between individual letters.
+
+        Increase to 3.5 if you want more spacing.
     */
 
-    drawThumbnailText(
+    const letterSpacing = 2.5;
+
+
+
+    /* =====================================================
+       STUDY WITH ME
+    ====================================================== */
+
+    drawLetterSpacedText(
         ctx,
+
         "STUDY WITH ME",
+
         x,
-        198,
+
+        82,
+
         maxWidth,
-        118
+
+        118,
+
+        letterSpacing
     );
 
 
-    /*
-       2. DURATION
-    */
 
-    drawThumbnailText(
+    /* =====================================================
+       DURATION
+    ====================================================== */
+
+    drawLetterSpacedText(
         ctx,
+
         duration,
+
         x,
-        374,
+
+        223,
+
         maxWidth,
-        125
+
+        125,
+
+        letterSpacing
     );
 
 
-    /*
-       3. SESSION
-    */
 
-    drawThumbnailText(
+    /* =====================================================
+       SESSION
+    ====================================================== */
+
+    drawLetterSpacedText(
         ctx,
+
         "SESSION",
+
         x,
-        518,
+
+        389,
+
         maxWidth,
-        118
+
+        118,
+
+        letterSpacing
     );
 
 
-    /*
-       4. TIME
-    */
 
-    drawThumbnailText(
+    /* =====================================================
+       TIME
+    ====================================================== */
+
+    drawTimeLine(
         ctx,
-        `${start} → ${end}`,
+
+        start,
+
+        end,
+
         x,
-        610,
+
+        535,
+
         maxWidth,
+
         67
     );
 
 
-    /*
-       5. DATE
-    */
 
-    drawThumbnailText(
+    /* =====================================================
+       DATE
+    ====================================================== */
+
+    drawLetterSpacedText(
         ctx,
+
         date,
+
         x,
-        703,
+
+        625,
+
         maxWidth,
-        67
+
+        67,
+
+        letterSpacing
     );
 
 
-    /*
-       Export final PNG.
-    */
 
-    return new Promise((resolve, reject) => {
+    /* =====================================================
+       EXPORT PNG
+    ====================================================== */
 
-        canvas.toBlob(
-            blob => {
+    return new Promise(
+        (resolve, reject) => {
 
-                if (!blob) {
+            canvas.toBlob(
 
-                    reject(
-                        new Error(
-                            "Could not create PNG."
-                        )
-                    );
+                blob => {
 
-                    return;
-                }
+                    if (!blob) {
 
-                resolve(blob);
+                        reject(
+                            new Error(
+                                "Could not create PNG."
+                            )
+                        );
 
-            },
-            "image/png"
-        );
-    });
+                        return;
+                    }
+
+
+                    resolve(blob);
+
+                },
+
+                "image/png",
+
+                1
+
+            );
+
+        }
+    );
 }
+
 
 
 /* =========================================================
@@ -868,16 +1704,22 @@ async function generateEverything() {
             "generateBtn"
         );
 
+
     const status =
         document.getElementById(
             "status"
         );
+
 
     const result =
         document.getElementById(
             "result"
         );
 
+
+    /*
+        Get inputs.
+    */
 
     const startValue =
         document.getElementById(
@@ -897,7 +1739,15 @@ async function generateEverything() {
         ).value.trim();
 
 
-    if (!startValue || !endValue) {
+
+    /*
+        Validate time.
+    */
+
+    if (
+        !startValue ||
+        !endValue
+    ) {
 
         alert(
             "Please select both start and end times."
@@ -907,11 +1757,18 @@ async function generateEverything() {
     }
 
 
+
+    /*
+        Calculate duration.
+    */
+
     const minutes =
         calculateDuration();
 
 
-    if (minutes <= 0) {
+    if (
+        minutes <= 0
+    ) {
 
         alert(
             "Please enter a valid session duration."
@@ -921,37 +1778,55 @@ async function generateEverything() {
     }
 
 
+
+    /*
+        Format everything.
+    */
+
     const duration =
-        durationText(minutes);
+        durationText(
+            minutes
+        );
 
 
     const start =
-        formatTime(startValue);
+        formatTime(
+            startValue
+        );
 
 
     const end =
-        formatTime(endValue);
+        formatTime(
+            endValue
+        );
 
 
     const date =
         getTodayDate();
 
 
+
     /*
-       Loading state.
+        Show loading.
     */
 
-    button.disabled = true;
+    button.disabled =
+        true;
 
-    status.style.display = "block";
 
-    result.style.display = "none";
+    status.style.display =
+        "block";
+
+
+    result.style.display =
+        "none";
+
 
 
     try {
 
         /*
-           These happen instantly.
+            Title.
         */
 
         const title =
@@ -960,6 +1835,10 @@ async function generateEverything() {
                 date
             );
 
+
+        /*
+            Description.
+        */
 
         const description =
             generateDescription(
@@ -972,7 +1851,7 @@ async function generateEverything() {
 
 
         /*
-           This creates the actual image.
+            Generate actual PNG.
         */
 
         const thumbnailBlob =
@@ -985,16 +1864,23 @@ async function generateEverything() {
 
 
         /*
-           Create browser URL.
+            Remove old object URL.
         */
 
-        if (generatedThumbnailURL) {
+        if (
+            generatedThumbnailURL
+        ) {
 
             URL.revokeObjectURL(
                 generatedThumbnailURL
             );
+
         }
 
+
+        /*
+            Create new object URL.
+        */
 
         generatedThumbnailURL =
             URL.createObjectURL(
@@ -1002,8 +1888,9 @@ async function generateEverything() {
             );
 
 
+
         /*
-           Display title.
+            Put title into UI.
         */
 
         document.getElementById(
@@ -1012,8 +1899,9 @@ async function generateEverything() {
             title;
 
 
+
         /*
-           Display description.
+            Put description into UI.
         */
 
         document.getElementById(
@@ -1022,8 +1910,9 @@ async function generateEverything() {
             description;
 
 
+
         /*
-           Display thumbnail.
+            Put thumbnail into UI.
         */
 
         document.getElementById(
@@ -1032,20 +1921,37 @@ async function generateEverything() {
             generatedThumbnailURL;
 
 
+
+        /*
+            Show result.
+        */
+
         result.style.display =
             "block";
 
 
+
+        /*
+            Smoothly scroll to result.
+        */
+
         result.scrollIntoView({
+
             behavior: "smooth",
+
             block: "start"
+
         });
 
     }
 
+
     catch (error) {
 
-        console.error(error);
+        console.error(
+            error
+        );
+
 
         alert(
             "Thumbnail generation failed.\n\n" +
@@ -1054,17 +1960,24 @@ async function generateEverything() {
 
     }
 
+
     finally {
 
-        button.disabled = false;
+        button.disabled =
+            false;
 
-        status.style.display = "none";
+
+        status.style.display =
+            "none";
+
     }
+
 }
 
 
+
 /* =========================================================
-   COPY
+   COPY TEXT
 ========================================================= */
 
 async function copyText(
@@ -1078,36 +1991,104 @@ async function copyText(
         ).textContent;
 
 
-    await navigator.clipboard.writeText(
-        text
-    );
+    try {
+
+        await navigator.clipboard.writeText(
+            text
+        );
 
 
-    const oldText =
-        button.textContent;
+        const originalText =
+            button.textContent;
 
-
-    button.textContent =
-        "Copied!";
-
-
-    setTimeout(() => {
 
         button.textContent =
-            oldText;
+            "Copied!";
 
-    }, 1200);
+
+        setTimeout(
+            () => {
+
+                button.textContent =
+                    originalText;
+
+            },
+
+            1200
+        );
+
+    }
+
+    catch (error) {
+
+        /*
+            Fallback for browsers where
+            clipboard API isn't available.
+        */
+
+        const textArea =
+            document.createElement(
+                "textarea"
+            );
+
+
+        textArea.value =
+            text;
+
+
+        document.body.appendChild(
+            textArea
+        );
+
+
+        textArea.select();
+
+
+        document.execCommand(
+            "copy"
+        );
+
+
+        textArea.remove();
+
+
+        const originalText =
+            button.textContent;
+
+
+        button.textContent =
+            "Copied!";
+
+
+        setTimeout(
+            () => {
+
+                button.textContent =
+                    originalText;
+
+            },
+
+            1200
+        );
+
+    }
+
 }
 
 
+
 /* =========================================================
-   DOWNLOAD
+   DOWNLOAD THUMBNAIL
 ========================================================= */
 
 function downloadThumbnail() {
 
-    if (!generatedThumbnailURL) {
+    if (
+        !generatedThumbnailURL
+    ) {
+
         return;
+
     }
 
 
@@ -1120,7 +2101,9 @@ function downloadThumbnail() {
 
 
     const link =
-        document.createElement("a");
+        document.createElement(
+            "a"
+        );
 
 
     link.href =
@@ -1131,11 +2114,16 @@ function downloadThumbnail() {
         filename;
 
 
-    document.body.appendChild(link);
+    document.body.appendChild(
+        link
+    );
+
 
     link.click();
 
+
     link.remove();
+
 }
 
 </script>
