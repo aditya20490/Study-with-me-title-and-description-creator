@@ -2,12 +2,17 @@
 <html lang="en">
 
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Study Stream Generator</title>
 
 <style>
+
+/* =========================
+   BASE
+========================= */
 
 * {
     box-sizing: border-box;
@@ -21,147 +26,347 @@ body {
     min-height: 100%;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     background: #080808;
     color: #ffffff;
     font-family: Arial, Helvetica, sans-serif;
+    -webkit-font-smoothing: antialiased;
 }
+
+
+/* =========================
+   NAVIGATION
+========================= */
+
+.nav {
+    width: 100%;
+    height: 72px;
+    border-bottom: 1px solid #202020;
+    display: flex;
+    align-items: center;
+}
+
+.nav-inner {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 28px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.nav-link {
+    color: #999;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.2s ease;
+}
+
+.nav-link:hover {
+    color: #ffffff;
+}
+
+
+/* =========================
+   PAGE
+========================= */
 
 .page {
     width: 100%;
-    min-height: 100vh;
+    min-height: calc(100vh - 72px);
     display: flex;
     justify-content: center;
 }
 
 .container {
     width: 100%;
-    max-width: 720px;
-    padding: 35px 20px 60px;
+    max-width: 780px;
+    padding: 70px 24px 90px;
 }
+
+
+/* =========================
+   HEADER
+========================= */
 
 .header {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 48px;
 }
 
 .header h1 {
     margin: 0;
-    font-size: 32px;
+
+    font-size: 42px;
+    line-height: 1.1;
     font-weight: 700;
+    letter-spacing: -1px;
 }
 
 .header p {
-    margin: 10px 0 0;
-    color: #999;
+    margin: 15px 0 0;
+
+    color: #8d8d8d;
     font-size: 16px;
+    line-height: 1.6;
 }
+
+
+/* =========================
+   MAIN CARD
+========================= */
 
 .card {
     width: 100%;
-    background: #151515;
-    border: 1px solid #2b2b2b;
-    border-radius: 16px;
-    padding: 28px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+
+    background: #111111;
+    border: 1px solid #292929;
+    border-radius: 18px;
+
+    padding: 32px;
+
+    box-shadow:
+        0 18px 45px rgba(0, 0, 0, 0.35);
+
+    transition:
+        border-color 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.card:hover {
+    border-color: #353535;
+
+    box-shadow:
+        0 22px 55px rgba(0, 0, 0, 0.42);
 }
 
 .card h2 {
-    margin: 0 0 25px;
-    font-size: 25px;
+    margin: 0 0 30px;
+
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+}
+
+
+/* =========================
+   FORM
+========================= */
+
+.time-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+}
+
+.field {
+    margin-bottom: 22px;
 }
 
 label {
     display: block;
-    font-size: 16px;
+
+    font-size: 13px;
     font-weight: 600;
+    color: #cfcfcf;
+
     margin-bottom: 9px;
+
+    letter-spacing: 0.2px;
 }
 
 input,
 textarea {
     width: 100%;
-    background: #0c0c0c;
+
+    background: #090909;
     color: #ffffff;
-    border: 1px solid #363636;
-    border-radius: 9px;
-    padding: 14px;
-    font-size: 16px;
+
+    border: 1px solid #303030;
+    border-radius: 10px;
+
+    padding: 14px 15px;
+
+    font-size: 15px;
     font-family: inherit;
+
     outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease;
+}
+
+input:hover,
+textarea:hover {
+    border-color: #414141;
 }
 
 input:focus,
 textarea:focus {
-    border-color: #777;
+    border-color: #666666;
+    background: #0b0b0b;
 }
 
 textarea {
     resize: vertical;
-    min-height: 100px;
+    min-height: 115px;
+    line-height: 1.5;
 }
 
-.time-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-}
 
-.field {
-    margin-bottom: 20px;
-}
+/* =========================
+   DURATION
+========================= */
 
 .duration {
     width: 100%;
+
     background: #090909;
-    border-radius: 9px;
-    padding: 18px;
+
+    border: 1px solid #242424;
+    border-radius: 10px;
+
+    padding: 19px;
+
     text-align: center;
-    font-size: 25px;
+
+    font-size: 24px;
     font-weight: 700;
-    margin: 5px 0 22px;
+
+    letter-spacing: 0.4px;
+
+    margin: 2px 0 25px;
 }
+
+
+/* =========================
+   GENERATE BUTTON
+========================= */
 
 .generate-button {
     width: 100%;
+
     border: none;
-    border-radius: 9px;
+    border-radius: 10px;
+
     padding: 16px;
+
     background: #ffffff;
     color: #000000;
-    font-size: 17px;
+
+    font-size: 14px;
     font-weight: 700;
+
+    letter-spacing: 0.5px;
+
     cursor: pointer;
+
+    transition:
+        transform 0.15s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.generate-button:hover {
+    background: #eeeeee;
+
+    box-shadow:
+        0 8px 25px rgba(255, 255, 255, 0.08);
 }
 
 .generate-button:active {
-    transform: scale(0.99);
+    transform: scale(0.985);
 }
+
+
+/* =========================
+   RESULTS
+========================= */
 
 .results {
     display: none;
-    margin-top: 25px;
+    margin-top: 24px;
+}
+
+.result-card {
+    width: 100%;
+
+    background: #111111;
+    border: 1px solid #292929;
+    border-radius: 18px;
+
+    padding: 32px;
+
+    box-shadow:
+        0 18px 45px rgba(0, 0, 0, 0.35);
 }
 
 .result-section {
-    margin-bottom: 28px;
+    margin-bottom: 34px;
+}
+
+.result-section:last-child {
+    margin-bottom: 0;
 }
 
 .result-section h3 {
-    margin: 0 0 10px;
-    font-size: 18px;
+    margin: 0 0 11px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    color: #d0d0d0;
+
+    letter-spacing: 0.2px;
 }
+
+
+/* =========================
+   OUTPUT
+========================= */
 
 .output {
     background: #090909;
-    border: 1px solid #303030;
-    border-radius: 9px;
-    padding: 15px;
+
+    border: 1px solid #292929;
+    border-radius: 10px;
+
+    padding: 16px;
+
     white-space: pre-wrap;
-    line-height: 1.5;
+    line-height: 1.55;
+
     word-break: break-word;
-    font-size: 15px;
+
+    font-size: 14px;
+    color: #eeeeee;
 }
+
+
+/* =========================
+   COPY BUTTON
+========================= */
 
 .button-row {
     display: flex;
@@ -171,37 +376,130 @@ textarea {
 
 .small-button {
     width: 100%;
-    border: none;
-    border-radius: 8px;
-    padding: 13px;
+
+    border: 1px solid #303030;
+    border-radius: 9px;
+
+    padding: 12px;
+
+    font-size: 12px;
     font-weight: 700;
+
+    letter-spacing: 0.4px;
+
     cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.15s ease;
 }
 
 .copy-button {
-    background: #292929;
+    background: #181818;
     color: #ffffff;
 }
 
+.copy-button:hover {
+    background: #202020;
+    border-color: #414141;
+}
+
+.copy-button:active {
+    transform: scale(0.985);
+}
+
+.copy-button.copied {
+    background: #ffffff;
+    color: #000000;
+    border-color: #ffffff;
+}
+
+
+/* =========================
+   NOTE
+========================= */
+
 .note {
-    color: #777;
-    font-size: 13px;
+    color: #666666;
+
+    font-size: 12px;
     line-height: 1.5;
+
     margin-top: 10px;
 }
 
+
+/* =========================
+   FOOTER
+========================= */
+
+.footer {
+    text-align: center;
+
+    margin-top: 55px;
+
+    color: #555555;
+
+    font-size: 12px;
+    letter-spacing: 0.2px;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
 @media (max-width: 600px) {
 
+    .nav {
+        height: 64px;
+    }
+
+    .nav-inner {
+        padding: 0 20px;
+    }
+
+    .nav-right {
+        gap: 17px;
+    }
+
+    .nav-link {
+        font-size: 13px;
+    }
+
+    .page {
+        min-height: calc(100vh - 64px);
+    }
+
     .container {
-        padding: 25px 16px 50px;
+        padding: 48px 16px 65px;
+    }
+
+    .header {
+        margin-bottom: 34px;
     }
 
     .header h1 {
-        font-size: 27px;
+        font-size: 31px;
+        letter-spacing: -0.6px;
     }
 
-    .card {
+    .header p {
+        font-size: 14px;
+        margin-top: 12px;
+    }
+
+    .card,
+    .result-card {
         padding: 22px;
+        border-radius: 15px;
+    }
+
+    .card h2 {
+        font-size: 20px;
+        margin-bottom: 25px;
     }
 
     .time-grid {
@@ -209,18 +507,89 @@ textarea {
         gap: 0;
     }
 
+    .duration {
+        font-size: 22px;
+    }
+
+}
+
+
+/* =========================
+   REDUCED MOTION
+========================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        transition: none !important;
+    }
+
 }
 
 </style>
+
 </head>
 
 
 <body>
 
+
+<!-- =========================
+     NAVIGATION
+========================= -->
+
+<nav class="nav">
+
+    <div class="nav-inner">
+
+        <a
+            href="https://aditya20490.github.io/"
+            class="logo"
+        >
+            ADITYA
+        </a>
+
+        <div class="nav-right">
+
+            <a
+                href="https://aditya20490.github.io/"
+                class="nav-link"
+            >
+                Home
+            </a>
+
+            <a
+                href="https://github.com/aditya20490"
+                class="nav-link"
+                target="_blank"
+                rel="noopener"
+            >
+                GitHub ↗
+            </a>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+<!-- =========================
+     PAGE
+========================= -->
+
 <div class="page">
 
 <div class="container">
 
+
+    <!-- HEADER -->
 
     <div class="header">
 
@@ -232,6 +601,8 @@ textarea {
 
     </div>
 
+
+    <!-- GENERATOR -->
 
     <div class="card">
 
@@ -307,14 +678,17 @@ textarea {
     </div>
 
 
+    <!-- RESULTS -->
+
     <div
         class="results"
         id="results"
     >
 
+        <div class="result-card">
 
-        <div class="card">
 
+            <!-- TITLE -->
 
             <div class="result-section">
 
@@ -329,7 +703,7 @@ textarea {
 
                     <button
                         class="small-button copy-button"
-                        onclick="copyText('titleOutput')"
+                        onclick="copyText('titleOutput', this)"
                     >
                         COPY TITLE
                     </button>
@@ -338,6 +712,8 @@ textarea {
 
             </div>
 
+
+            <!-- DESCRIPTION -->
 
             <div class="result-section">
 
@@ -352,7 +728,7 @@ textarea {
 
                     <button
                         class="small-button copy-button"
-                        onclick="copyText('descriptionOutput')"
+                        onclick="copyText('descriptionOutput', this)"
                     >
                         COPY DESCRIPTION
                     </button>
@@ -361,6 +737,8 @@ textarea {
 
             </div>
 
+
+            <!-- GEMINI PROMPT -->
 
             <div class="result-section">
 
@@ -375,7 +753,7 @@ textarea {
 
                     <button
                         class="small-button copy-button"
-                        onclick="copyText('promptOutput')"
+                        onclick="copyText('promptOutput', this)"
                     >
                         COPY GEMINI PROMPT
                     </button>
@@ -394,6 +772,12 @@ textarea {
 
         </div>
 
+    </div>
+
+
+    <div class="footer">
+
+        Built by ADITYA
 
     </div>
 
@@ -405,6 +789,10 @@ textarea {
 
 <script>
 
+
+/* =========================
+   TEMPLATES
+========================= */
 
 const TITLE_TEMPLATE =
     "Study With Me | {DURATION} Session | JEE 2028";
@@ -424,6 +812,10 @@ Grab your books and study along with me.
 
 #JEE2028 #StudyWithMe #JEE`;
 
+
+/* =========================
+   CALCULATE DURATION
+========================= */
 
 function calculateDuration() {
 
@@ -489,6 +881,10 @@ function calculateDuration() {
 }
 
 
+/* =========================
+   DURATION TEXT
+========================= */
+
 function durationText(duration) {
 
     let result = "";
@@ -526,6 +922,10 @@ function durationText(duration) {
 
 }
 
+
+/* =========================
+   FORMAT TIME
+========================= */
 
 function formatTime(time) {
 
@@ -567,6 +967,10 @@ function formatTime(time) {
 }
 
 
+/* =========================
+   UPDATE DURATION
+========================= */
+
 function updateDuration() {
 
     const duration =
@@ -586,6 +990,10 @@ function updateDuration() {
 }
 
 
+/* =========================
+   THUMBNAIL PROMPT
+========================= */
+
 function generateThumbnailPrompt(
     durationString
 ) {
@@ -598,6 +1006,10 @@ Output as a YouTube thumbnail in the original 16:9 format. You don't have to hel
 
 }
 
+
+/* =========================
+   GENERATE STREAM
+========================= */
 
 function generateStream() {
 
@@ -624,10 +1036,6 @@ function generateStream() {
 
 
     if (!duration) {
-
-        alert(
-            "Please enter the start and end time."
-        );
 
         return;
     }
@@ -713,7 +1121,11 @@ function generateStream() {
 }
 
 
-function copyText(elementId) {
+/* =========================
+   COPY
+========================= */
+
+function copyText(elementId, button) {
 
     const text =
         document.getElementById(
@@ -726,8 +1138,32 @@ function copyText(elementId) {
         .then(
             function() {
 
-                alert(
-                    "Copied! ✅"
+                const originalText =
+                    button.textContent;
+
+
+                button.textContent =
+                    "COPIED ✓";
+
+
+                button.classList.add(
+                    "copied"
+                );
+
+
+                setTimeout(
+                    function() {
+
+                        button.textContent =
+                            originalText;
+
+
+                        button.classList.remove(
+                            "copied"
+                        );
+
+                    },
+                    1200
                 );
 
             }
@@ -735,15 +1171,18 @@ function copyText(elementId) {
         .catch(
             function() {
 
-                alert(
-                    "Copy failed. Please select and copy it manually."
-                );
+                /* No popup.
+                   Copy simply fails silently. */
 
             }
         );
 
 }
 
+
+/* =========================
+   EVENTS
+========================= */
 
 document
     .getElementById("startTime")
@@ -761,9 +1200,12 @@ document
     );
 
 
+/* INITIAL DURATION */
+
 updateDuration();
 
 </script>
+
 
 </body>
 
