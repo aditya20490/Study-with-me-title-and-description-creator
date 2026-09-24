@@ -543,7 +543,7 @@ textarea {
                 <input
                     type="time"
                     id="startTime"
-                    value="17:00"
+                    value="07:00"
                 >
 
             </div>
@@ -558,7 +558,7 @@ textarea {
                 <input
                     type="time"
                     id="endTime"
-                    value="19:30"
+                    value="12:30"
                 >
 
             </div>
@@ -571,7 +571,7 @@ textarea {
             class="duration"
             id="duration"
         >
-            2 HOURS 30 MIN
+            5 HOURS 30 MIN
         </div>
 
 
@@ -719,17 +719,56 @@ textarea {
 
 
 /* =========================
+   GET TODAY'S DATE
+========================= */
+
+function getTodayDate() {
+
+    const today = new Date();
+
+    const day =
+        String(today.getDate())
+        .padStart(2, "0");
+
+    const monthNames = [
+        "JANUARY",
+        "FEBRUARY",
+        "MARCH",
+        "APRIL",
+        "MAY",
+        "JUNE",
+        "JULY",
+        "AUGUST",
+        "SEPTEMBER",
+        "OCTOBER",
+        "NOVEMBER",
+        "DECEMBER"
+    ];
+
+    const month =
+        monthNames[today.getMonth()];
+
+    const year =
+        today.getFullYear();
+
+    return `${day} ${month} ${year}`;
+
+}
+
+
+/* =========================
    TEMPLATES
 ========================= */
 
 const TITLE_TEMPLATE =
-    "Study With Me | {DURATION} Session | JEE 2028";
+    "Study With Me | {DURATION} Session | {DATE} | JEE 2028";
 
 
 const DESCRIPTION_TEMPLATE =
 `Study with me for a focused {DURATION} JEE 2028 study session.
 
-🕐 Session: {START} – {END}
+📅 Date: {DATE}
+🕐 Session: {START} → {END}
 📚 JEE 2028 Preparation
 🎧 No talking • Deep focus
 
@@ -919,18 +958,94 @@ function updateDuration() {
 
 
 /* =========================
-   THUMBNAIL PROMPT
+   GEMINI THUMBNAIL PROMPT
 ========================= */
 
 function generateThumbnailPrompt(
-    durationString
+    durationString,
+    formattedStart,
+    formattedEnd,
+    dateString
 ) {
 
-    return `Edit the attached thumbnail while preserving the original design exactly. Do not redesign, restyle, crop, resize, or change the composition. Keep the same black-and-white visual style, typography style, character, positioning, icons, lighting, colors, background, and overall layout.
-Only replace the existing duration text "6 HOUR" with "${durationString}".
-Keep the new duration in exactly the same location, font style, size, weight, alignment, spacing, and white color as the original duration text. Make the replacement look naturally integrated into the original thumbnail.
-Do not add any new elements. Do not remove or modify anything else. The final image should look identical to the attached original thumbnail except for the updated duration.
-Output as a YouTube thumbnail in the original 16:9 format. You don't have to help with images of people, and don't depict some public figures.`;
+    return `Edit the attached original thumbnail to create the daily version of the same thumbnail.
+
+IMPORTANT: Preserve the original thumbnail's exact visual identity and layout. Do not redesign it.
+
+Keep:
+- The same 16:9 aspect ratio
+- The same black-and-white cinematic aesthetic
+- The same dark background and lighting
+- The same suited character on the right
+- The same character position, size, pose, clothing, face, and red tie
+- The same typography style
+- The same text hierarchy
+- The same spacing, alignment, margins, and composition
+- The same JEE 2028 fire effect at the bottom-left
+- The same overall visual balance
+
+Only update the session information for today's study session.
+
+The thumbnail must contain exactly this text structure:
+
+STUDY WITH ME
+
+${durationString}
+
+SESSION
+
+${formattedStart} → ${formattedEnd}
+
+${dateString}
+
+JEE 2028
+
+TEXT LAYOUT:
+
+1. "STUDY WITH ME"
+Keep this as the large top heading on the upper-left.
+
+2. "${durationString}"
+Keep this as the largest and most prominent text directly below "STUDY WITH ME".
+Use the same bold condensed white typography.
+
+3. "SESSION"
+Place this directly below the duration, maintaining the same large typography and left alignment.
+
+4. "${formattedStart} → ${formattedEnd}"
+Place the session time directly below "SESSION".
+Keep it clearly readable and aligned with the main text block.
+
+5. "${dateString}"
+Place the date directly below the session time.
+Keep it clearly readable, properly aligned, and visually separated from the time.
+
+6. "JEE 2028"
+Keep this as a small white text element at the bottom-left with a subtle realistic fire effect around and behind the text.
+The fire effect should remain small, controlled, cinematic, and understated.
+Do NOT make the fire large, flashy, glowing excessively, or distracting.
+The "JEE 2028" text itself must remain clearly readable and primarily white.
+
+Do not move the character or change the background.
+
+Do not add any new icons, objects, decorations, logos, or text.
+
+Do not change the wording of any text.
+
+Do not add quotation marks around the text.
+
+Make sure all text is spelled exactly as provided and remains fully readable.
+
+The final image should look like the exact same original thumbnail template being updated for a new day's study session, not like a newly generated thumbnail.
+
+Today's session information:
+
+Duration: ${durationString}
+Start: ${formattedStart}
+End: ${formattedEnd}
+Date: ${dateString}
+
+Output the final image as a 16:9 YouTube thumbnail.`;
 
 }
 
@@ -980,13 +1095,29 @@ function generateStream() {
         formatTime(end);
 
 
+    const dateString =
+        getTodayDate();
+
+
+    /* =========================
+       TITLE
+    ========================= */
+
     const title =
         TITLE_TEMPLATE
         .replaceAll(
             "{DURATION}",
             durationString
+        )
+        .replaceAll(
+            "{DATE}",
+            dateString
         );
 
+
+    /* =========================
+       DESCRIPTION
+    ========================= */
 
     const description =
         DESCRIPTION_TEMPLATE
@@ -1003,17 +1134,32 @@ function generateStream() {
             formattedEnd
         )
         .replaceAll(
+            "{DATE}",
+            dateString
+        )
+        .replaceAll(
             "{TARGET}",
             target ||
             "Focused JEE 2028 preparation"
         );
 
 
+    /* =========================
+       THUMBNAIL PROMPT
+    ========================= */
+
     const thumbnailPrompt =
         generateThumbnailPrompt(
-            durationString
+            durationString,
+            formattedStart,
+            formattedEnd,
+            dateString
         );
 
+
+    /* =========================
+       DISPLAY RESULTS
+    ========================= */
 
     document.getElementById(
         "titleOutput"
